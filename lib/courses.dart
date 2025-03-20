@@ -8,7 +8,7 @@ class Courses extends StatelessWidget {
       return Scaffold(
       appBar: AppBar(
         title: const Text('courses'),
-        automaticallyImplyLeading: false, // remove the menu icon (the hamburger icon)
+        automaticallyImplyLeading: false, 
       ),
     );
   }

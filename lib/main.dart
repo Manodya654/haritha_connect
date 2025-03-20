@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:haritha_connect/course_details.dart';
 import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/events.dart';
+import 'package:haritha_connect/job_details.dart';
 import 'package:haritha_connect/jobs.dart';
 import 'package:haritha_connect/profile.dart';
 
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MainPage(),
+      home: CourseDetailsView(),
+      //home: JobDetailsPage(),
     );
   }
 }
