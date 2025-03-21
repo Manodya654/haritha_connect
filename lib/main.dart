@@ -1,218 +1,238 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/course_details.dart';
-import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/job_details.dart';
-import 'package:haritha_connect/jobs.dart';
-import 'package:haritha_connect/profile.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(HarithaConnectApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class HarithaConnectApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CourseDetailsView(),
-      //home: JobDetailsPage(),
+      home: LandingPage(),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    const Jobs(),
-    const Courses(),
-    const Profile(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      drawer: const NavigationDrawer(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/harithaimage1.png', height: 250),
+            SizedBox(height: 20),
+            Text(
+              'Find your job now',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                'Discover the best job opportunities tailored to your skills and interests.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
+            ),
+            
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                
+                Icon(Icons.circle, size: 10, color: Colors.grey),
+                SizedBox(width: 5),
+                Icon(Icons.circle, size: 10, color: Colors.grey),
+                SizedBox(width: 5),
+                Icon(Icons.circle, size: 10, color: Colors.blue),
+                ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+                padding: EdgeInsets.all(15),
+                backgroundColor: const Color.fromARGB(255, 43, 103, 167),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JobSearchPage()),
+                );
+              },
+              child: Icon(Icons.arrow_forward, color: Colors.white),
+            ),
+              ],
+              
+            ),
+            SizedBox(width: 100),
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //     shape: CircleBorder(),
+            //     padding: EdgeInsets.all(15),
+            //     backgroundColor: const Color.fromARGB(255, 43, 103, 167),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => JobSearchPage()),
+            //     );
+            //   },
+            //   child: Icon(Icons.arrow_forward, color: Colors.white),
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class JobSearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search job here...',
+            prefixIcon: Icon(Icons.search, color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+            fillColor: Colors.grey[200],
+            filled: true,
+          ),
+        ),
+        actions: [
+          CircleAvatar(backgroundImage: AssetImage('assets/images/image.jpeg')),
+          SizedBox(width: 15),
+        ],
+      ),
       body: Column(
         children: [
-
-          // fixed app bar 
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-
+          Padding(
+            padding: EdgeInsets.all(20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    _scaffoldKey.currentState?.openDrawer();
-                  },
-                  child: const CircleAvatar(
-                    radius: 22,
-                    backgroundImage: AssetImage('images/profile.jpg'),
+                
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      'Jobs',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
+                SizedBox(width: 100),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 28, 104, 166),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.search, color: Colors.grey),
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: "Search here...",
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      'Events',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-
-          
           Expanded(
-            child: _pages[_selectedIndex],
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                List<Color> colors = [
+                  Colors.blue,
+                  Colors.pink,
+                  Colors.green,
+                  Colors.red,
+                  Colors.yellow,
+                ];
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(backgroundColor: colors[index], radius: 20),
+                            SizedBox(width: 12),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      index == 0 ? 'Web Developer' : 'Software Engineer Intern',
+                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 100),
+                                    Text(
+                                      '250k - 315k USD/year',
+                                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey[700]),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Wrap(
+                          spacing: 6,
+                          children: [
+                            Chip(label: Text('Full-Time'), backgroundColor: Colors.white),
+                            Chip(label: Text('Hybrid'), backgroundColor: Colors.grey[100]),
+                            Chip(label: Text('Colombo'), backgroundColor: Colors.white),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'At Vilampara Media, we are leading digital marketing through our innovative Power Reach AI ecosystem, designed to help businesses expand their reach and grow efficiently. As part of this initiative, we are seeking a creative and technically skilled Web Designer to join our team. This role is essential in building, managing, and optimizing WordPress websites that form the foundation of our clients’ digital success.',
+                          style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
-
-      // bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 64, 84, 178),
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.work),
-            label: 'Jobs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Home Page Widget
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-//add home page contents here in the home screen
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "add home content hereeeeeee",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-// Navigation drawer from profile icon
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      width: 250,
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 64, 84, 178),
-            ),
-            accountName: const Text('Username', style: TextStyle(color: Colors.white, fontSize: 18)),
-            accountEmail: const Text('username@gmail.com', style: TextStyle(color: Colors.white70)),
-            currentAccountPicture: const CircleAvatar(
-              backgroundImage: AssetImage('images/profile.jpg'),
-            ),
-          ),
-          
-          const ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.layers),
-            title: Text('Courses'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.bookmark),
-            title: Text('Saved'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.event),
-            title: Text('Events'),
-          ),
-          const Spacer(),
-          const Divider(),
-          const ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-          ),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Jobs'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Courses'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
       ),
     );
