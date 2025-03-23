@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'Components.dart';
 
@@ -19,31 +17,11 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  File? _selectedFile;
-
-  void _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'], // ✅ Restrict to PDF files
-    );
-
-    if (result != null) {
-      setState(() {
-        _selectedFile = File(result.files.single.path!);
-      });
-    }
-  }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      if (_selectedFile == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("❌ Please upload a PDF resume!")),
-        );
-        return;
-      }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("✅ Profile Edited Successfully!")),
+        SnackBar(content: Text("Profile Edited Successfully!")),
       );
     }
   }
@@ -89,7 +67,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: Form(
-                  key: _formKey,
+                  key: _formKey, // ✅ Now correctly placed
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -122,33 +100,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 30),
-
-                      
-                      Text(
-                        "Upload Resume",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      OutlinedButton.icon(
-                        onPressed: _pickFile,
-                        icon: Icon(Icons.upload_file),
-                        label: Text(_selectedFile != null ? "Resume Selected" : "Upload PDF"),
-                      ),
-                      if (_selectedFile != null) ...[
-                        const SizedBox(height: 10),
-                        Text(
-                          "File: ${_selectedFile!.path.split('/').last}",
-                          style: TextStyle(color: Colors.green),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Upload Resume",
+                          border: OutlineInputBorder(),
                         ),
-                      ],
+                      ),
                       const SizedBox(height: 30),
-
-
                       Text(
                         "Skills",
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
+
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -236,16 +200,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       const SizedBox(height: 30),
 
-
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _submitForm,
-                          child: Text("Submit Profile"),
+                          child: Text("Submit Event"),
                         ),
                       ),
 
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 50), // Extra spacing at the bottom
                     ],
                   ),
                 ),
