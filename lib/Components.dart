@@ -54,3 +54,11 @@ const TextStyle Kheaderstyle = TextStyle(
   fontSize: 30,
   fontWeight: FontWeight.bold,
 );
+
+final ButtonStyle kOutlineButtonStyle = OutlinedButton.styleFrom(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+  ),
+  side: const BorderSide(color: Colors.black),
+  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+);
