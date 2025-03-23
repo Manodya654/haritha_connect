@@ -67,7 +67,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: Form(
-                  key: _formKey, // ✅ Now correctly placed
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -100,19 +100,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Upload Resume",
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
+                      // Skills Section
                       Text(
                         "Skills",
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
-
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -199,16 +192,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ],
                       ),
                       const SizedBox(height: 30),
-
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _submitForm,
-                          child: Text("Submit Event"),
+                          child: Text("Edit Profile"),
                         ),
                       ),
-
-                      const SizedBox(height: 50), // Extra spacing at the bottom
+                      const SizedBox(height: 50),
                     ],
                   ),
                 ),
