@@ -133,6 +133,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 style: kOutlineButtonStyle,
                                 child: Text("Java"),
                               ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  print("C clicked");
+                                },
+                                style: kOutlineButtonStyle,
+                                child: Text("C"),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -160,6 +167,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 style: kOutlineButtonStyle,
                                 child: Text("Python"),
                               ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  print("AI clicked");
+                                },
+                                style: kOutlineButtonStyle,
+                                child: Text("Ai"),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -186,7 +200,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 },
                                 style: kOutlineButtonStyle,
                                 child: Text("Ruby"),
-                              ),
+                              )
                             ],
                           ),
                         ],
