@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_learning/components/BottomNavBar.dart';
+import 'package:haritha_learning/components/bookmarkButton.dart';
 
 class EventDetails extends StatefulWidget {
   const EventDetails({super.key});
@@ -19,13 +20,7 @@ class _EventDetailsState extends State<EventDetails> {
         ),
         title: const Text('Event Details'),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.bookmark_border,
-              color: Colors.blue,
-            ),
-            onPressed: () {},
-          ),
+          BookmarkButton(),
         ],
       ),
       body: Padding(
