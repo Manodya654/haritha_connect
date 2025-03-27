@@ -27,22 +27,22 @@ ios/DerivedData/
 .env
 **/.DS_Store
 **/Thumbs.db
-*/.swp
-*/.swo
-*/.log
+**/*.swp
+**/*.swo
+**/*.log
 
 # Packages
-*/packages//build/
-*/packages//.dart_tool/
+**/packages/*/build/
+**/packages/*/.dart_tool/
 
 # Generated files
-*/lib/generated/*
+**/lib/generated/**
 
 # Other Generated Files (e.g., Freezed, JSON Serializable)
-*/lib//.g.dart
-*/lib//.freezed.dart
-*/lib//.chopper.dart
-*/lib//.mocks.dart
+**/lib/**/*.g.dart
+**/lib/**/*.freezed.dart
+**/lib/**/*.chopper.dart
+**/lib/**/*.mocks.dart
 
 # Dependency Package Configuration Files (for some package managers)
 pubspec.lock
@@ -93,10 +93,8 @@ ios/Runner/GoogleService-Info.plist
 credentials.json
 
 # Automatically generated assets
-assets/i18n//*g.dart
+assets/i18n/**/*g.dart
 
 # Automatically generated l10n files (if using Flutter's localization)
-lib/l10n//.arb
+lib/l10n/**/.arb
 lib/l10n/l10n.yaml
-/android/app/.cxx/Debug
-/android/app/.cxx/Debug
