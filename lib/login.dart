@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Jobs extends StatelessWidget {
-  const Jobs({super.key});
+class Login extends StatelessWidget {
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+      return Scaffold(
       appBar: AppBar(
-        title: const Text('Jobs'),
+        title: const Text('Login'),
         automaticallyImplyLeading: false, // remove the menu icon (the hamburger icon)
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/jobs.dart';
+import 'package:haritha_connect/home.dart';
+import 'package:haritha_connect/search.dart';
 import 'package:haritha_connect/main.dart';
 import 'package:haritha_connect/profile.dart';
 
@@ -20,8 +21,8 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
   int _selectedIndex = 2; 
 
   final List<Widget> _pages = [
-    HomeScreen(),
-    Jobs(),
+    Home(),
+    Search(),
     Courses(),
     Profile(),
   ];
@@ -105,32 +106,58 @@ class CourseDetailsView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween, 
               children: [
-                Row( 
+                Row(
                   children: [
                     CircleAvatar(
                       radius: 16,  
                       backgroundImage: AssetImage('images/profile.jpg'), 
                     ),
                     SizedBox(width: 8),  
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row( 
                       children: [
-                        Text(
-                          'Annyce Davis', 
-                          style: TextStyle(
-                            fontSize: 12, 
-                            color: Color.fromARGB(137, 0, 0, 0), 
-                            fontWeight: FontWeight.bold,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Annyce Davis', 
+                              style: TextStyle(
+                                fontSize: 14, 
+                                color: Color.fromARGB(137, 0, 0, 0), 
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4), 
+                            Text(
+                              'Engineering Leader and Author', 
+                              style: TextStyle(
+                                fontSize: 12, 
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        //Follow button
+                        SizedBox(width: 10),
+                        TextButton(
+                          onPressed: () {}, 
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                            backgroundColor: const Color.fromARGB(255, 113, 168, 255),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            'Follow',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        SizedBox(height: 4), 
-                        Text(
-                          'Engineering Leader and Author', 
-                          style: TextStyle(
-                            fontSize: 12, 
-                            color: Colors.black54,
-                          ),
-                        ),
+
                       ],
                     ),
                   ],

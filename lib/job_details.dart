@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/jobs.dart';
+import 'package:haritha_connect/saved.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -19,7 +19,7 @@ class JobDetailsPage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Jobs()), 
+              MaterialPageRoute(builder: (context) => JobDetailsPage()), 
             );
           },
         ),
@@ -29,7 +29,7 @@ class JobDetailsPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Jobs()), 
+                MaterialPageRoute(builder: (context) => Saved()), 
               );
             },
           ),
@@ -218,6 +218,35 @@ class JobDetailsPage extends StatelessWidget {
           ],
         ),
       ),
+
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: _selectedIndex,
+      //   onTap: _onItemTapped,
+      //   selectedItemColor: const Color.fromARGB(255, 64, 84, 178),
+      //   unselectedItemColor: Colors.grey,
+      //   showUnselectedLabels: true,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.work),
+      //       label: 'Jobs',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.school),
+      //       label: 'Courses',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.person),
+      //       label: 'Account',
+      //     ),
+      //   ],
+      // ),
+
+
     );
   }
 }
