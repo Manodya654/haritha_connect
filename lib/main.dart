@@ -1,220 +1,177 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/course_details.dart';
-import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/job_details.dart';
-import 'package:haritha_connect/jobs.dart';
-import 'package:haritha_connect/profile.dart';
+import 'components/BottomNavBar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CourseDetailsView(),
-      //home: JobDetailsPage(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen());
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    const Jobs(),
-    const Courses(),
-    const Profile(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      drawer: const NavigationDrawer(),
-      body: Column(
-        children: [
-
-          // fixed app bar 
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-
-            child: Row(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: SearchBar(),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    _scaffoldKey.currentState?.openDrawer();
-                  },
-                  child: const CircleAvatar(
-                    radius: 22,
-                    backgroundImage: AssetImage('images/profile.jpg'),
-                  ),
-                ),
+                CategoryButton(label: 'Courses', color: Colors.white70),
                 const SizedBox(width: 10),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: const Row(
+              ],
+            ),
+
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return CourseCard();
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Bottomnavbar(pageIndex: 2),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundImage: NetworkImage(
+            'https://i.pravatar.cc/150?img=3',
+          ), // Profile image from a placeholder service
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "Search job here...",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.grey[200],
+              prefixIcon: Icon(Icons.search),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CourseCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+            child: Image.network(
+              'https://img.freepik.com/free-vector/online-tutorials-concept_52683-37480.jpg?ga=GA1.1.1735124578.1741663265&semt=ais_keywords_boost',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Android Development Essential Training: 1 Your First App",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "This course teaches the basics of Android app development with Java and Kotlin...",
+                  style: TextStyle(color: Colors.grey[700]),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Icon(Icons.search, color: Colors.grey),
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: "Search here...",
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
+                        Icon(Icons.people, size: 16),
+                        SizedBox(width: 5),
+                        Text("4.5K"),
                       ],
                     ),
-                  ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          221,
+                          230,
+                          238,
+                        ), // FIXED: Updated primary color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text("Data Science"),
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.access_time, size: 16),
+                        SizedBox(width: 5),
+                        Text("15 hr"),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-
-          
-          Expanded(
-            child: _pages[_selectedIndex],
-          ),
-        ],
-      ),
-
-      // bottom navigation bar
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 64, 84, 178),
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.work),
-            label: 'Jobs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
         ],
       ),
     );
   }
 }
 
-// Home Page Widget
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
 
-//add home page contents here in the home screen
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "add home content hereeeeeee",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final Color color;
 
-// Navigation drawer from profile icon
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+  CategoryButton({required this.label, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      width: 250,
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 64, 84, 178),
-            ),
-            accountName: const Text('Username', style: TextStyle(color: Colors.white, fontSize: 18)),
-            accountEmail: const Text('username@gmail.com', style: TextStyle(color: Colors.white70)),
-            currentAccountPicture: const CircleAvatar(
-              backgroundImage: AssetImage('images/profile.jpg'),
-            ),
-          ),
-          
-          const ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.layers),
-            title: Text('Courses'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.bookmark),
-            title: Text('Saved'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.event),
-            title: Text('Events'),
-          ),
-          const Spacer(),
-          const Divider(),
-          const ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-          ),
-        ],
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color, // FIXED: Updated primary color
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
+      child: Text(label),
     );
   }
 }
