@@ -1,6 +1,6 @@
 {
-    "name": "haritha_connect",
-    "short_name": "haritha_connect",
+    "name": "mobile_event",
+    "short_name": "mobile_event",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

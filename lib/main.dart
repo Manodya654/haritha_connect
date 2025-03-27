@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/course_details.dart';
-import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/job_details.dart';
-import 'package:haritha_connect/jobs.dart';
-import 'package:haritha_connect/profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,206 +9,257 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: CourseDetailsView(),
-      //home: JobDetailsPage(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    const Jobs(),
-    const Courses(),
-    const Profile(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      drawer: const NavigationDrawer(),
-      body: Column(
-        children: [
-
-          // fixed app bar 
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Jobs'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Courses'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+        ],
+        currentIndex: 0,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Search Bar Section
+              Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-              ],
-            ),
-
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    _scaffoldKey.currentState?.openDrawer();
-                  },
-                  child: const CircleAvatar(
-                    radius: 22,
-                    backgroundImage: AssetImage('images/profile.jpg'),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundImage: NetworkImage(
+                          'https://img.freepik.com/free-vector/professional-tiktok-profile-picture_742173-5866.jpg',
                         ),
-                      ],
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.search, color: Colors.grey),
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: "Search here...",
-                              border: InputBorder.none,
-                            ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Search for jobs...',
+                            prefixIcon: Icon(Icons.search, color: Colors.grey),
+                            border: InputBorder.none,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
 
-          
-          Expanded(
-            child: _pages[_selectedIndex],
-          ),
-        ],
-      ),
+              const SizedBox(height: 20),
 
-      // bottom navigation bar
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 64, 84, 178),
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+              // Category Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CategoryButton(label: 'Jobs', color: Colors.blue),
+                  const SizedBox(width: 10),
+                  CategoryButton(label: 'Events', color: Colors.green),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              // Events Section
+              SectionTitle(title: "This Week's Events"),
+              Row(
+                children: [
+                  Expanded(
+                    child: EventCard(
+                      title: 'Event 1',
+                      organizer: 'Organizer Name',
+                      date: '25/02/24',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: EventCard(
+                      title: 'Event 2',
+                      organizer: 'Organizer Name',
+                      date: '25/02/24',
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              // Featured Event Section
+              SectionTitle(title: "Featured Event"),
+              FeaturedEventCard(),
+
+              const SizedBox(height: 20),
+
+              // Workshops Section
+              SectionTitle(title: "Workshops"),
+              EventCard(
+                title: 'Workshop 1',
+                organizer: 'Organizer Name',
+                date: '25/02/24',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.work),
-            label: 'Jobs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
-// Home Page Widget
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final Color color;
 
-//add home page contents here in the home screen
+  const CategoryButton({required this.label, required this.color});
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 22),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
       child: Text(
-        "add home content hereeeeeee",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        label,
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
       ),
     );
   }
 }
 
-// Navigation drawer from profile icon
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+class SectionTitle extends StatelessWidget {
+  final String title;
+
+  const SectionTitle({required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      width: 250,
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 64, 84, 178),
-            ),
-            accountName: const Text('Username', style: TextStyle(color: Colors.white, fontSize: 18)),
-            accountEmail: const Text('username@gmail.com', style: TextStyle(color: Colors.white70)),
-            currentAccountPicture: const CircleAvatar(
-              backgroundImage: AssetImage('images/profile.jpg'),
-            ),
-          ),
-          
-          const ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.layers),
-            title: Text('Courses'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.bookmark),
-            title: Text('Saved'),
-          ),
-          const ListTile(
-            leading: Icon(Icons.event),
-            title: Text('Events'),
-          ),
-          const Spacer(),
-          const Divider(),
-          const ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
+    return Text(
+      title,
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class EventCard extends StatelessWidget {
+  final String title;
+  final String organizer;
+  final String date;
+
+  const EventCard({
+    required this.title,
+    required this.organizer,
+    required this.date,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 5,
+            offset: Offset(0, 3),
           ),
         ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            organizer,
+            style: TextStyle(color: Colors.white70, fontSize: 14),
+          ),
+          const SizedBox(height: 10),
+          Text(date, style: TextStyle(color: Colors.white70, fontSize: 12)),
+        ],
+      ),
+    );
+  }
+}
+
+class FeaturedEventCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                'https://img.freepik.com/free-psd/artificial-intelligence-template-design_23-2151631490.jpg',
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Event 2',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Text('By John Doe', style: TextStyle(color: Colors.grey)),
+                ],
+              ),
+            ),
+            Text(
+              '25/02/24',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
   }

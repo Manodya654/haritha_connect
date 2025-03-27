@@ -1,0 +1,5 @@
+package com.example.mobile_event
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
