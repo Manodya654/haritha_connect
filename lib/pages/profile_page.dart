@@ -50,6 +50,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 140, right: 10),
+                                child: IconButton(
+                                  color: Colors.black,
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              )
                             ],
                           ),
                         ],
