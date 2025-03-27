@@ -98,3 +98,5 @@ assets/i18n/**/*g.dart
 # Automatically generated l10n files (if using Flutter's localization)
 lib/l10n/**/.arb
 lib/l10n/l10n.yaml
+/android/app/.cxx/Debug
+/android/app/.cxx/Debug
