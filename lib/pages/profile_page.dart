@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_learning/components/curvedBackground.dart';
+import 'package:haritha_learning/components/BottomNavBar.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -410,6 +411,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           );
         },
+      ),
+      bottomNavigationBar: Bottomnavbar(
+        pageIndex: 3,
       ),
     );
   }
