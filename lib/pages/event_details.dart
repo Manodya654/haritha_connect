@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_learning/components/BottomNavBar.dart';
 import 'package:haritha_learning/components/bookmarkButton.dart';
+import 'package:haritha_learning/pages/profile_page.dart';
 
 class EventDetails extends StatefulWidget {
   const EventDetails({super.key});
@@ -14,13 +15,22 @@ class _EventDetailsState extends State<EventDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {},
+          ),
         ),
-        title: const Text('Event Details'),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: const Text('Event Details'),
+        ),
         actions: [
-          BookmarkButton(),
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: BookmarkButton(),
+          ),
         ],
       ),
       body: Padding(
@@ -118,7 +128,12 @@ class _EventDetailsState extends State<EventDetails> {
                 SizedBox(
                   width: 125,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage()));
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
