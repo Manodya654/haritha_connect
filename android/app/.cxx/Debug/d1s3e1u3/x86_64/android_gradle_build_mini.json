@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/venurakaranasinghe/FlutterTools/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/venurakaranasinghe/FlutterTools/Android/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/venurakaranasinghe/Library/CloudStorage/OneDrive-NSBM/2 nd year/2nd semester/Mobile App development/haritha_connect/android/app/.cxx/Debug/d1s3e1u3/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/venurakaranasinghe/FlutterTools/Android/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/venurakaranasinghe/Library/CloudStorage/OneDrive-NSBM/2 nd year/2nd semester/Mobile App development/haritha_connect/android/app/.cxx/Debug/d1s3e1u3/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
