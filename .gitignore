@@ -99,3 +99,4 @@ assets/i18n/**/*g.dart
 lib/l10n/**/.arb
 lib/l10n/l10n.yaml
 /android/app/.cxx/Debug
+android/app/build.gradle.kts

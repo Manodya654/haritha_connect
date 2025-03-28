@@ -17,8 +17,8 @@ class AddEventScreen extends StatefulWidget {
 
 class _AddEventScreenState extends State<AddEventScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -79,7 +79,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ),
             ),
           ),
-
           Positioned(
             top: 130,
             left: 20,
@@ -100,7 +99,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Event Name",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter event name" : null,
+                        validator: (value) =>
+                            value!.isEmpty ? "Please enter event name" : null,
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
@@ -108,7 +108,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Organizer Name",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter organizer name" : null,
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter organizer name"
+                            : null,
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
@@ -116,7 +118,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Event Description",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter event description" : null,
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter event description"
+                            : null,
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
@@ -124,7 +128,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Event Location",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter event location" : null,
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter event location"
+                            : null,
                       ),
                       const SizedBox(height: 30),
 
@@ -140,7 +146,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 suffixIcon: Icon(Icons.calendar_today),
                               ),
                               onTap: () => _selectDate(context),
-                              validator: (value) => value!.isEmpty ? "Please select event date" : null,
+                              validator: (value) => value!.isEmpty
+                                  ? "Please select event date"
+                                  : null,
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -154,7 +162,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 suffixIcon: Icon(Icons.access_time),
                               ),
                               onTap: () => _selectTime(context),
-                              validator: (value) => value!.isEmpty ? "Please select event time" : null,
+                              validator: (value) => value!.isEmpty
+                                  ? "Please select event time"
+                                  : null,
                             ),
                           ),
                         ],
@@ -174,7 +184,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               side: BorderSide(color: Colors.black),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                             ),
                             child: Text(
                               "Workshop",
@@ -191,7 +202,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               side: BorderSide(color: Colors.black),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                             ),
                             child: Text(
                               "Event",

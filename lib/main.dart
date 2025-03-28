@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/course_details.dart';
 import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/job_details.dart';
 import 'package:haritha_connect/jobs.dart';
 import 'package:haritha_connect/profile.dart';
 
@@ -30,7 +29,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
@@ -55,8 +53,7 @@ class _MainPageState extends State<MainPage> {
       drawer: const NavigationDrawer(),
       body: Column(
         children: [
-
-          // fixed app bar 
+          // fixed app bar
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: const BoxDecoration(
@@ -69,7 +66,6 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-
             child: Row(
               children: [
                 GestureDetector(
@@ -117,7 +113,6 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
 
-          
           Expanded(
             child: _pages[_selectedIndex],
           ),
@@ -184,13 +179,14 @@ class NavigationDrawer extends StatelessWidget {
             decoration: const BoxDecoration(
               color: Color.fromARGB(255, 64, 84, 178),
             ),
-            accountName: const Text('Username', style: TextStyle(color: Colors.white, fontSize: 18)),
-            accountEmail: const Text('username@gmail.com', style: TextStyle(color: Colors.white70)),
+            accountName: const Text('Username',
+                style: TextStyle(color: Colors.white, fontSize: 18)),
+            accountEmail: const Text('username@gmail.com',
+                style: TextStyle(color: Colors.white70)),
             currentAccountPicture: const CircleAvatar(
               backgroundImage: AssetImage('images/profile.jpg'),
             ),
           ),
-          
           const ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
