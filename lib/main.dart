@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/job_details.dart';
-import 'package:haritha_connect/profile.dart';
+import 'package:haritha_connect/Editprofile.dart';
+import 'package:haritha_connect/ADEvent.dart';
 
 
 
@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
       //home: MainPage(),
       home: Courses(),
       routes: <String,WidgetBuilder>{
-        '/profile': (BuildContext context) => Profile(),
-        '/job_details': (BuildContext context) => JobDetailsPage(),
         '/courses': (BuildContext context) => Courses(),
+        '/Editprofile': (BuildContext context) => EditProfileScreen(),
+        '/ADEvent':(BuildContext context) => AddEventScreen(),
       }
     );
   }
