@@ -5,34 +5,42 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: EditProfileScreen(),
+      home: AddCourseScreen(),
     ),
   );
 }
 
-class EditProfileScreen extends StatefulWidget {
+class AddCourseScreen extends StatefulWidget {
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  _AddCourseScreenState createState() => _AddCourseScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _AddCourseScreenState extends State<AddCourseScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _dateController = TextEditingController();
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
+      });
+    }
+  }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Profile Edited Successfully!")),
+        SnackBar(content: Text("Course Added Successfully!")),
       );
     }
   }
-
-  final ButtonStyle kOutlineButtonStyle = OutlinedButton.styleFrom(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-    ),
-    side: const BorderSide(color: Colors.black),
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Text(
-                      "Edit Profile",
+                      "Add Course",
                       style: Kheaderstyle,
                     ),
                   ),
@@ -74,36 +82,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       const SizedBox(height: 30),
                       TextFormField(
                         decoration: const InputDecoration(
-                          labelText: "Title",
+                          labelText: "Course Name",
                           border: OutlineInputBorder(),
                         ),
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
                         decoration: const InputDecoration(
-                          labelText: "Name",
+                          labelText: "Course Description",
                           border: OutlineInputBorder(),
                         ),
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
                         decoration: const InputDecoration(
-                          labelText: "About",
+                          labelText: "Course Instructor",
                           border: OutlineInputBorder(),
                         ),
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
                         decoration: const InputDecoration(
-                          labelText: "Add Experience",
+                          labelText: "Course Duration",
                           border: OutlineInputBorder(),
                         ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      TextFormField(
+                        controller: _dateController,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                          labelText: "Event Date",
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        onTap: () => _selectDate(context),
+                        validator: (value) =>
+                            value!.isEmpty ? "Please select event date" : null,
                       ),
                       const SizedBox(height: 30),
                       // Skills Section
                       Text(
-                        "Skills",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        "Subject",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       Column(
@@ -114,103 +138,43 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             children: [
                               OutlinedButton(
                                 onPressed: () {
-                                  print("HTML clicked");
-                                },
-                                style: kOutlineButtonStyle,
-                                child: Text("HTML"),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  print("PHP Clicked");
-                                },
-                                style: kOutlineButtonStyle,
-                                child: Text("PHP"),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  print("Java clicked");
-                                },
-                                style: kOutlineButtonStyle,
-                                child: Text("Java"),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  print("C clicked");
-                                },
-                                style: kOutlineButtonStyle,
-                                child: Text("C"),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Wrap(
-                            spacing: 20,
-                            children: [
-                              OutlinedButton(
-                                onPressed: () {
-                                  print("React clicked");
-                                },
-                                style: kOutlineButtonStyle,
-                                child: Text("React"),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  print("Dart clicked");
-                                },
-                                style: kOutlineButtonStyle,
-                                child: Text("Dart"),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  print("Python clicked");
-                                },
-                                style: kOutlineButtonStyle,
-                                child: Text("Python"),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  print("AI clicked");
+                                  print("Ai clicked");
                                 },
                                 style: kOutlineButtonStyle,
                                 child: Text("Ai"),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Wrap(
-                            spacing: 20,
-                            children: [
                               OutlinedButton(
                                 onPressed: () {
-                                  print("C# clicked");
+                                  print("Machine Learning Clicked");
                                 },
                                 style: kOutlineButtonStyle,
-                                child: Text("C#"),
+                                child: Text("Machine Learning"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Javascript clicked");
+                                  print("Data Science clicked");
                                 },
                                 style: kOutlineButtonStyle,
-                                child: Text("Javascript"),
+                                child: Text("Data Science"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Ruby clicked");
+                                  print("Computer Science clicked");
                                 },
                                 style: kOutlineButtonStyle,
-                                child: Text("Ruby"),
-                              )
+                                child: Text("Computer Science"),
+                              ),
                             ],
                           ),
+                          const SizedBox(height: 10),
                         ],
                       ),
-                      const SizedBox(height: 30),
+
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _submitForm,
-                          child: Text("Edit Profile"),
+                          child: Text("Add Course"),
                         ),
                       ),
                       const SizedBox(height: 50),
