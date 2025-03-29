@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/componets/app_drawer.dart';
-import 'package:haritha_connect/componets/bottom_nav_bar.dart.dart';
-import 'package:haritha_connect/componets/header.dart.dart';
+
+
 
 class Home extends StatefulWidget {
   @override
