@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/courses.dart';
 import 'package:haritha_connect/jobs.dart';
-import 'package:haritha_connect/main.dart';
+import 'package:haritha_connect/main4.dart';
 import 'package:haritha_connect/profile.dart';
 
 void main() {
