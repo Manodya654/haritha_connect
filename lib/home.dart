@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/componets/app_drawer.dart';
-import 'package:haritha_connect/componets/bottom_nav_bar.dart.dart';
-import 'package:haritha_connect/componets/header.dart.dart';
+// import 'package:haritha_connect/componets/bottom_nav_bar.dart.dart';
+// import 'package:haritha_connect/componets/header.dart.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -20,12 +20,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(),
+      // appBar: Header(),
       drawer: AppDrawer(),
       body: Center(
         child: Text("Selected Index: $_selectedIndex", style: TextStyle(fontSize: 20)),
       ),
-      bottomNavigationBar: BottomNavBar(currentIndex: _selectedIndex, onTap: _onItemTapped),
+      // bottomNavigationBar: BottomNavBar(currentIndex: _selectedIndex, onTap: _onItemTapped),
     );
   }
 }
