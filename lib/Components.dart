@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+// curved Style
 const CurvedBackground kcurvedBackground = CurvedBackground();
 class CurvedBackground extends StatelessWidget {
   final double height;
@@ -55,6 +57,9 @@ const TextStyle Kheaderstyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+
+
+
 final ButtonStyle kOutlineButtonStyle = OutlinedButton.styleFrom(
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(20),
@@ -62,3 +67,46 @@ final ButtonStyle kOutlineButtonStyle = OutlinedButton.styleFrom(
   side: const BorderSide(color: Colors.black),
   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
 );
+
+
+// Bottom Nav Bar
+class Bottomnavbar extends StatelessWidget {
+  final int pageIndex;
+
+  const Bottomnavbar({this.pageIndex = 1});
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.grey,
+      currentIndex: pageIndex,
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        BottomNavigationBarItem(icon: Icon(Icons.work), label: "Jobs"),
+        BottomNavigationBarItem(icon: Icon(Icons.book), label: "Courses"),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
+      ],
+    );
+  }
+}
+
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final Color color;
+
+  CategoryButton({required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color, // FIXED: Updated primary color
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      child: Text(label),
+    );
+  }
+}
