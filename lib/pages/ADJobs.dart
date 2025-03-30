@@ -139,6 +139,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           children: [
                             OutlinedButton(
                               onPressed: () {
+                                setState(() {
+                                  _jobType = "Full Time";
+                                });
                                 print("Full Time clicked");
                               },
                               style: OutlinedButton.styleFrom(
@@ -157,6 +160,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             SizedBox(width: 20),
                             OutlinedButton(
                               onPressed: () {
+                                setState(() {
+                                  _jobType = "Remote working";
+                                });
                                 print("Remote working clicked");
                               },
                               style: OutlinedButton.styleFrom(
@@ -175,6 +181,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             SizedBox(width: 20),
                             OutlinedButton(
                               onPressed: () {
+                                setState(() {
+                                  _jobType = "Hourly";
+                                });
                                 print("Hourly working clicked");
                               },
                               style: OutlinedButton.styleFrom(
