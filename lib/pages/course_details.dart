@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_connect/pages/courses.dart';
+import 'package:haritha_connect/pages/courses.dart';
 
 class CourseDetailsPage extends StatefulWidget {
   const CourseDetailsPage({super.key});

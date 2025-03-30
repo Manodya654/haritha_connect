@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_connect/pages/jobs.dart';
+import 'package:haritha_connect/pages/jobs.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
