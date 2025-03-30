@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-
 // curved Style
 const CurvedBackground kcurvedBackground = CurvedBackground();
+
 class CurvedBackground extends StatelessWidget {
   final double height;
   final Widget? child;
@@ -41,7 +41,8 @@ class CustomCurveClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     Path path = Path();
     path.lineTo(0, size.height - 50);
-    path.quadraticBezierTo(size.width / 2, size.height + 20, size.width, size.height - 50);
+    path.quadraticBezierTo(
+        size.width / 2, size.height + 20, size.width, size.height - 50);
     path.lineTo(size.width, 0);
     path.close();
     return path;
@@ -57,9 +58,6 @@ const TextStyle Kheaderstyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-
-
-
 final ButtonStyle kOutlineButtonStyle = OutlinedButton.styleFrom(
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(20),
@@ -67,7 +65,6 @@ final ButtonStyle kOutlineButtonStyle = OutlinedButton.styleFrom(
   side: const BorderSide(color: Colors.black),
   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
 );
-
 
 // Bottom Nav Bar
 class Bottomnavbar extends StatelessWidget {
