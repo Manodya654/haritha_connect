@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/bottom_nav_bar.dart.dart';
+import 'package:haritha_connect/events.dart';
 
 class EventDetails extends StatefulWidget {
   const EventDetails({super.key});
@@ -14,8 +14,13 @@ class _EventDetailsState extends State<EventDetails> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Events()), 
+            );
+          },
         ),
         title: const Text('Event Details'),
         actions: [
@@ -23,7 +28,7 @@ class _EventDetailsState extends State<EventDetails> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(18.2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,18 +38,23 @@ class _EventDetailsState extends State<EventDetails> {
               children: [
                 const Text(
                   'Highspeed Studios',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Container(
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade100,
+                   // color: Colors.blue.shade100,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   // child: const Icon(Icons.loop, color: Colors.blue),
-                  child: Image.network(
-                    "https://img.freepik.com/free-vector/illustration-photo-studio-stamp-banner_53876-6870.jpg?ga=GA1.1.1378088882.1742949859&semt=ais_hybrid",
+                  child: ClipOval(
+                    child: Image.network(
+                      "https://img.freepik.com/free-vector/illustration-photo-studio-stamp-banner_53876-6870.jpg?ga=GA1.1.1378088882.1742949859&semt=ais_hybrid",
+                      width: 100, // Set width
+                      height: 100, // Set height
+                      fit: BoxFit.cover, // Ensures the image fills the circle
+                    ),
                   ),
                 ),
               ],
@@ -119,14 +129,14 @@ class _EventDetailsState extends State<EventDetails> {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Color.fromARGB(255, 3, 14, 115),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: const Text('JOIN', style: TextStyle(fontSize: 16)),
+                    child: const Text('JOIN', style: TextStyle(fontSize: 14)),
                   ),
                 ),
               ],

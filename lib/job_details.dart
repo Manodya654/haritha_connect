@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:haritha_connect/home.dart';
+import 'package:haritha_connect/main.dart';
 import 'package:haritha_connect/saved.dart';
 
 void main() {
@@ -19,7 +21,7 @@ class JobDetailsPage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => JobDetailsPage()), 
+              MaterialPageRoute(builder: (context) => HomeScreen()), 
             );
           },
         ),
@@ -56,7 +58,7 @@ class JobDetailsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(width: 150), 
+                SizedBox(width: 60), 
                 CircleAvatar(
                   radius: 32,  
                   backgroundImage: AssetImage('images/company1.jpg'), 

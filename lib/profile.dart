@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:haritha_connect/componets/BottomNavBar.dart';
 import 'package:haritha_connect/components.dart';
 
+import 'componets/header.dart';
+
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+   Profile({super.key});
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -12,11 +17,13 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //key: _scaffoldKey,
       extendBody: true,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Column(
             children: [
+              //HeaderWidget(scaffoldKey: _scaffoldKey),
               SizedBox(
                 height: 250,
                 child: Stack(
@@ -50,6 +57,18 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 140, right: 10),
+                                child: IconButton(
+                                  color: Colors.black,
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              )
                             ],
                           ),
                         ],
@@ -66,9 +85,10 @@ class _ProfileState extends State<Profile> {
                             border: Border.all(
                                 color: Colors.white, width: 7), // White border
                           ),
-                          child: const CircleAvatar(
-                            radius: 65,
-                            backgroundImage: AssetImage('images/profile.jpg'),
+                          child: CircleAvatar(
+                            radius: 65, // Adjust size
+                            backgroundImage: NetworkImage(
+                                "https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?ga=GA1.1.1378088882.1742949859&semt=ais_hybrid"), // Local image
                           ),
                         ),
                       ),
@@ -398,6 +418,7 @@ class _ProfileState extends State<Profile> {
           );
         },
       ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

@@ -1,225 +1,258 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/components.dart';
+import 'package:haritha_connect/addEvents.dart';
+import 'package:haritha_connect/componets/BottomNavBar.dart';
+import 'package:haritha_connect/componets/NavigationDrawer.dart' as custom;
+import 'package:haritha_connect/componets/header.dart';
+import 'package:haritha_connect/event_details.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AddEventScreen(),
-    ),
-  );
-}
-
-class AddEventScreen extends StatefulWidget {
-  @override
-  _AddEventScreenState createState() => _AddEventScreenState();
-}
-
-class _AddEventScreenState extends State<AddEventScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
-
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        _dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
-      });
-    }
-  }
-
-  Future<void> _selectTime(BuildContext context) async {
-    TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (pickedTime != null) {
-      setState(() {
-        _timeController.text = pickedTime.format(context);
-      });
-    }
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Event Submitted Successfully!")),
-      );
-    }
-  }
-
+class Events extends StatelessWidget {
+  
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: CurvedBackground(
-              height: 150,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+     key: _scaffoldKey,
+      drawer: const custom.NavigationDrawer(), // Custom navigation drawer
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(150), // Adjust height if needed
+        child: HeaderWidget(scaffoldKey: _scaffoldKey), // Custom header
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Events Section
+              SectionTitle(title: "This Week's Events"),
+               const SizedBox(height: 15),
+              Row(
+  children: [
+    Expanded(
+      child: GestureDetector(
+        onTap: () {
+          // Navigate to another page (replace with your destination)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventDetails()), // Your destination page
+          );
+        },
+        child: EventCard(
+          title: 'Event 1',
+          organizer: 'Organizer Name',
+          date: '25/02/24',
+        ),
+      ),
+    ),
+    const SizedBox(width: 10),
+    Expanded(
+      child: GestureDetector(
+        onTap: () {
+          // Navigate to another page (replace with your destination)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EventDetails()), // Your destination page
+          );
+        },
+        child: EventCard(
+          title: 'Event 2',
+          organizer: 'Organizer Name',
+          date: '25/02/24',
+        ),
+      ),
+    ),
+  ],
+),
+
+
+              const SizedBox(height: 20),
+
+              // Featured Event Section
+              SectionTitle(title: "Featured Event"),
+              FeaturedEventCard(),
+
+              const SizedBox(height: 30),
+
+              // Workshops Section
+              SectionTitle(title: "Workshops"),
+               const SizedBox(height: 15),
+              Row(
                 children: [
-                  const SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Add Event",
-                      style: Kheaderstyle,
+                  Expanded(
+                    child: EventCard(
+                      title: 'Workshop 1',
+                      organizer: 'Organizer Name',
+                      date: '25/02/24',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: EventCard(
+                      title: 'workshop 2',
+                      organizer: 'Organizer Name',
+                      date: '25/02/24',
                     ),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddEventScreen()), 
+            );
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomNavBar(),
+    );
+  }
+}
 
-          Positioned(
-            top: 130,
-            left: 20,
-            right: 20,
-            bottom: 20, // Ensure it expands properly
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 30),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Event Name",
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) => value!.isEmpty ? "Please enter event name" : null,
-                      ),
-                      const SizedBox(height: 30),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Organizer Name",
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) => value!.isEmpty ? "Please enter organizer name" : null,
-                      ),
-                      const SizedBox(height: 30),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Event Description",
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) => value!.isEmpty ? "Please enter event description" : null,
-                      ),
-                      const SizedBox(height: 30),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Event Location",
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) => value!.isEmpty ? "Please enter event location" : null,
-                      ),
-                      const SizedBox(height: 30),
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final Color color;
 
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _dateController,
-                              readOnly: true,
-                              decoration: const InputDecoration(
-                                labelText: "Event Date",
-                                border: OutlineInputBorder(),
-                                suffixIcon: Icon(Icons.calendar_today),
-                              ),
-                              onTap: () => _selectDate(context),
-                              validator: (value) => value!.isEmpty ? "Please select event date" : null,
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: TextFormField(
-                              controller: _timeController,
-                              readOnly: true,
-                              decoration: const InputDecoration(
-                                labelText: "Event Time",
-                                border: OutlineInputBorder(),
-                                suffixIcon: Icon(Icons.access_time),
-                              ),
-                              onTap: () => _selectTime(context),
-                              validator: (value) => value!.isEmpty ? "Please select event time" : null,
-                            ),
-                          ),
-                        ],
-                      ),
+  const CategoryButton({required this.label, required this.color});
 
-                      const SizedBox(height: 30),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          OutlinedButton(
-                            onPressed: () {
-                              print("Workshop clicked");
-                            },
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              side: BorderSide(color: Colors.black),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            ),
-                            child: Text(
-                              "Workshop",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          OutlinedButton(
-                            onPressed: () {
-                              print("Event clicked");
-                            },
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              side: BorderSide(color: Colors.black),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            ),
-                            child: Text(
-                              "Event",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _submitForm,
-                          child: Text("Submit Event"),
-                        ),
-                      ),
-
-                      const SizedBox(height: 50), // Extra spacing at the bottom
-                    ],
-                  ),
-                ),
-              ),
-            ),
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 22),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 5,
+            offset: Offset(0, 3),
           ),
         ],
       ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  final String title;
+
+  const SectionTitle({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class EventCard extends StatelessWidget {
+  final String title;
+  final String organizer;
+  final String date;
+
+  const EventCard({
+    required this.title,
+    required this.organizer,
+    required this.date,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            organizer,
+            style: TextStyle(color: Colors.white70, fontSize: 14),
+          ),
+          const SizedBox(height: 10),
+          Text(date, style: TextStyle(color: Colors.white70, fontSize: 12)),
+        ],
+      ),
+    );
+  }
+}
+
+class FeaturedEventCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+  padding: EdgeInsets.all(15),
+  child: Column( // Use Column instead of Row
+    crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+    children: [
+      ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Image.asset(
+          'images/course1.png',
+          height: 200,
+          width: double.infinity, // Makes the image take full width
+          fit: BoxFit.cover, // Ensures it fits nicely
+        ),
+      ),
+      const SizedBox(height: 12), // Space between image and text
+      Text(
+        'Event 2',
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+      ),
+      Column(
+        children: [
+          Text('By John Doe', style: TextStyle(color: Colors.grey)),
+        ],
+      ),
+      Align(
+        alignment: Alignment.bottomRight,
+        child: Text(
+          '25/02/24',
+          style: TextStyle(color: Colors.grey, fontSize: 14),
+        ),
+      ),
+    ],
+  ),
+),
+
     );
   }
 }

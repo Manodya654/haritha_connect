@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/BottomNavBar.dart';
+import 'package:haritha_connect/componets/BottomNavBar.dart';
+import 'package:haritha_connect/componets/NavigationDrawer.dart' as custom;
+import 'package:haritha_connect/componets/header.dart';
+import 'package:haritha_connect/course_details.dart';
 
 class Courses extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const custom.NavigationDrawer(), // Custom navigation drawer
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(150), // Adjust height if needed
+        child: HeaderWidget(scaffoldKey: _scaffoldKey), // Custom header
+      ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -13,11 +24,13 @@ class Courses extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CategoryButton(label: 'Courses', color: Colors.white70),
-                const SizedBox(width: 10),
+                const Text(
+              'Courses',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 itemCount: 3,
@@ -29,6 +42,7 @@ class Courses extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
@@ -36,74 +50,96 @@ class Courses extends StatelessWidget {
 class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-            child: Image.asset(
-              'images/course1.jpg', // Update with your actual asset path
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () { // FIXED: Changed `onPressed` to `onTap`
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CourseDetailsView()), 
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              child: Image.asset(
+                'images/course1.jpg',
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Android Development Essential Training: 1 Your First App",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "This course teaches the basics of Android app development with Java and Kotlin...",
-                  style: TextStyle(color: Colors.grey[700]),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.people, size: 16),
-                        SizedBox(width: 5),
-                        Text("4.5K"),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          221,
-                          230,
-                          238,
-                        ), // FIXED: Updated primary color
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Android Development Essential Training: 1 Your First App",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "This course teaches the basics of Android app development with Java and Kotlin...",
+                    style: TextStyle(color: Colors.grey[700]),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: const [
+                          Icon(Icons.people, size: 16),
+                          SizedBox(width: 5),
+                          Text("4.5K"),
+                        ],
                       ),
-                      child: Text("Data Science"),
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.access_time, size: 16),
-                        SizedBox(width: 5),
-                        Text("15 hr"),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 221, 230, 238),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text("Data Science"),
+                      ),
+                      Row(
+                        children: const [
+                          Icon(Icons.access_time, size: 16),
+                          SizedBox(width: 5),
+                          Text("15 hr"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final Color color;
+
+  const CategoryButton({Key? key, required this.label, required this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      child: Text(label),
     );
   }
 }

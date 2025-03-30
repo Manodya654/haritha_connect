@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:haritha_connect/courses.dart';
 import 'package:haritha_connect/home.dart';
 import 'package:haritha_connect/search.dart';
-import 'package:haritha_connect/main.dart';
 import 'package:haritha_connect/profile.dart';
 
 void main() {
@@ -21,7 +20,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
   int _selectedIndex = 2; 
 
   final List<Widget> _pages = [
-    Home(),
+    HomeScreen(),
     Search(),
     Courses(),
     Profile(),
