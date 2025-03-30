@@ -1,26 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ui_connect/pages/signup.dart';
+import 'package:ui_connect/pages/login.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<Login> createState() => _MyAppState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _MyAppState extends State<Login> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Haritha Connect',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: SignInScreen(),
-    );
-  }
-}
-
-class SignInScreen extends StatelessWidget {
+class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +21,9 @@ class SignInScreen extends StatelessWidget {
               'assets/images/harithaimage.jpg',
               height: 200,
             ),
-            SizedBox(height: 80),
+            SizedBox(height: 60),
             Text(
-              'Sign In',
+              'Sign Up',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
@@ -63,16 +51,29 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 25),
+            SizedBox(height: 15),
+            SizedBox(
+              width: 280,
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
             SizedBox(
               width: 280, // Increased width
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle Sign In logic
+                  // Handle Sign Up logic
                 },
-                child: Text('Sign In', style: TextStyle(color: Colors.white)),
+                child: Text('Sign Up', style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.blue, // Blue button
                   padding: EdgeInsets.symmetric(vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -80,19 +81,20 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Not registered yet?"),
+                Text("Already have an account?"),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      MaterialPageRoute(builder: (context) => Login()),
                     );
                   },
-                  child: Text('Sign Up', style: TextStyle(color: Colors.blue)),
+                  child: Text('Sign In',
+                      style: TextStyle(color: Colors.blue)), // Blue text
                 ),
               ],
             ),
