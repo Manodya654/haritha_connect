@@ -20,7 +20,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
   int _selectedIndex = 2; 
 
   final List<Widget> _pages = [
-    HomeScreen(),
+    Home(),
     Search(),
     Courses(),
     Profile(),

@@ -70,7 +70,7 @@ class SignInScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(builder: (context) => Home()),
                   );
                 },
                 child: Text('Sign In', style: TextStyle(color: Colors.white)),
