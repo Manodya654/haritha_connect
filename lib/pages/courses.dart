@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/Components.dart';
+<<<<<<< Updated upstream
 import 'package:ui_connect/pages/course_details.dart';
+=======
+import 'package:haritha_connect/components/BottomNavBar.dart';
+>>>>>>> Stashed changes
 
 class Courses extends StatefulWidget {
   const Courses({super.key});
