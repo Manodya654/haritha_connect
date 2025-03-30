@@ -5,6 +5,25 @@ class Bottomnavbar extends StatelessWidget {
 
   const Bottomnavbar({super.key, this.pageIndex = 1});
 
+  void _onItemTapped(BuildContext context, int index) {
+    if (index == pageIndex) return; // Prevent unnecessary navigation
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/events');
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/courses');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/account');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -12,6 +31,7 @@ class Bottomnavbar extends StatelessWidget {
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey,
       currentIndex: pageIndex,
+      onTap: (index) => _onItemTapped(context, index),
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(icon: Icon(Icons.event), label: "Events"),
