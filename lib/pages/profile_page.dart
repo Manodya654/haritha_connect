@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/curvedBackground.dart';
 import 'package:haritha_connect/components/BottomNavBar.dart';
-import 'package:ui_connect/pages/Editprofile.dart';
+import 'package:haritha_connect/pages/Editprofile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
