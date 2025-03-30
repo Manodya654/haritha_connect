@@ -62,20 +62,6 @@ class LandingPage extends StatelessWidget {
               
             ),
             SizedBox(width: 100),
-            // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //     shape: CircleBorder(),
-            //     padding: EdgeInsets.all(15),
-            //     backgroundColor: const Color.fromARGB(255, 43, 103, 167),
-            //   ),
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => JobSearchPage()),
-            //     );
-            //   },
-            //   child: Icon(Icons.arrow_forward, color: Colors.white),
-            // ),
           ],
         ),
       ),
@@ -92,7 +78,7 @@ class JobSearchPage extends StatelessWidget {
         elevation: 0,
         title: TextField(
           decoration: InputDecoration(
-            hintText: 'Search job here...',
+            hintText: 'Search Job Here...',
             prefixIcon: Icon(Icons.search, color: Colors.grey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
@@ -184,7 +170,7 @@ class JobSearchPage extends StatelessWidget {
                                       index == 0 ? 'Web Developer' : 'Software Engineer Intern',
                                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(width: double.infinity),
+                                    SizedBox(width: 105),
                                     Text(
                                       '250k - 315k USD/year',
                                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey[700]),
