@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/componets/NavigationDrawer.dart';
-import 'package:haritha_connect/componets/BottomNavBar.dart';
-import 'package:haritha_connect/componets/header.dart';
+import 'package:connecting_pages_mad/components/NavigationDrawer.dart'
+    as custom;
+import 'package:connecting_pages_mad/components/BottomNavBar.dart';
+import 'package:connecting_pages_mad/components/header.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -19,13 +20,20 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: HeaderWidget(),
-        drawer: NavigationDrawer(),
-        body: Center(
-          child: Text("Selected Index: $_selectedIndex", style: TextStyle(fontSize: 20)),
-        ),
-        bottomNavigationBar: BottomNavBar(currentIndex: _selectedIndex, onTap: _onItemTapped),
-      );
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+    return Scaffold(
+      key: _scaffoldKey,
+      drawer: const custom.NavigationDrawer(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(150), // Adjust height if needed
+        child: HeaderWidget(scaffoldKey: _scaffoldKey), // Custom header
+      ),
+      body: Center(
+        child: Text("Selected Index: $_selectedIndex",
+            style: TextStyle(fontSize: 20)),
+      ),
+      bottomNavigationBar: BottomNavBar(),
+    );
   }
 }
