@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/BottomNavBar.dart';
-import 'package:ui_connect/pages/event_details.dart';
+import 'package:haritha_connect/pages/event_details.dart';
 
 class Events extends StatefulWidget {
   const Events({super.key});
