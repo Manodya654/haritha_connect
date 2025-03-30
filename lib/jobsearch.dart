@@ -184,7 +184,7 @@ class JobSearchPage extends StatelessWidget {
                                       index == 0 ? 'Web Developer' : 'Software Engineer Intern',
                                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(width: 100),
+                                    SizedBox(width: double.infinity),
                                     Text(
                                       '250k - 315k USD/year',
                                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey[700]),
