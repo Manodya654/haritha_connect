@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui_connect/components/BottomNavBar.dart';
-import 'package:ui_connect/pages/job_details.dart';
+import 'package:haritha_connect/components/BottomNavBar.dart';
+import 'package:haritha_connect/pages/job_details.dart';
 
 class Jobs extends StatefulWidget {
   const Jobs({super.key});

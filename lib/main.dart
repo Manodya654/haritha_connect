@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ui_connect/pages/courses.dart';
-import 'package:ui_connect/pages/events.dart';
-import 'package:ui_connect/pages/jobs.dart';
-import 'package:ui_connect/pages/profile_page.dart';
+import 'package:haritha_connect/pages/courses.dart';
+import 'package:haritha_connect/pages/events.dart';
+import 'package:haritha_connect/pages/jobs.dart';
+import 'package:haritha_connect/pages/profile_page.dart';
 
 void main() {
   // runApp(const MyApp());
