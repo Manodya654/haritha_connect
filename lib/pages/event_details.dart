@@ -19,7 +19,9 @@ class _EventDetailsState extends State<EventDetails> {
           padding: const EdgeInsets.only(top: 20),
           child: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         title: Padding(
@@ -151,7 +153,7 @@ class _EventDetailsState extends State<EventDetails> {
         ),
       ),
       bottomNavigationBar: Bottomnavbar(
-        pageIndex: 3,
+        pageIndex: 1,
       ),
     );
   }

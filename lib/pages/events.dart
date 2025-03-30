@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/BottomNavBar.dart';
+import 'package:ui_connect/pages/event_details.dart';
 
 class Events extends StatefulWidget {
   const Events({super.key});
@@ -51,35 +52,41 @@ class _EventsState extends State<Events> {
 
               const SizedBox(height: 20),
 
-              // Category Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CategoryButton(label: 'Jobs', color: Colors.blue),
-                  const SizedBox(width: 10),
-                  CategoryButton(label: 'Events', color: Colors.green),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
               // Events Section
               SectionTitle(title: "This Week's Events"),
               Row(
                 children: [
                   Expanded(
-                    child: EventCard(
-                      title: 'Event 1',
-                      organizer: 'Organizer Name',
-                      date: '25/02/24',
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EventDetails()),
+                        );
+                      },
+                      child: EventCard(
+                        title: 'Event 1',
+                        organizer: 'Organizer Name',
+                        date: '25/02/24',
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: EventCard(
-                      title: 'Event 2',
-                      organizer: 'Organizer Name',
-                      date: '25/02/24',
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EventDetails()),
+                        );
+                      },
+                      child: EventCard(
+                        title: 'Event 2',
+                        organizer: 'Organizer Name',
+                        date: '25/02/24',
+                      ),
                     ),
                   ),
                 ],
@@ -89,16 +96,32 @@ class _EventsState extends State<Events> {
 
               // Featured Event Section
               SectionTitle(title: "Featured Event"),
-              FeaturedEventCard(),
+
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EventDetails()),
+                    );
+                  },
+                  child: FeaturedEventCard()),
 
               const SizedBox(height: 20),
 
               // Workshops Section
               SectionTitle(title: "Workshops"),
-              EventCard(
-                title: 'Workshop 1',
-                organizer: 'Organizer Name',
-                date: '25/02/24',
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EventDetails()),
+                  );
+                },
+                child: EventCard(
+                  title: 'Workshop 1',
+                  organizer: 'Organizer Name',
+                  date: '25/02/24',
+                ),
               ),
             ],
           ),
