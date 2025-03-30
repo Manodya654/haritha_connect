@@ -46,12 +46,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Edit Profile",
-                      style: Kheaderstyle,
-                    ),
+                  Row(
+                    children: [
+                      // Padding(
+                      // padding: EdgeInsets.only(left: 20.0),
+                      // child: IconButton(
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.arrow_back),
+                        color: Colors.white,
+                      ),
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "Edit Profile",
+                          style: Kheaderstyle,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -103,7 +118,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       // Skills Section
                       Text(
                         "Skills",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
                       Column(
