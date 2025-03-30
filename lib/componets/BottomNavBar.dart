@@ -17,7 +17,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-     HomeScreen(),
+     Home(),
      Events(),
      Courses(),
     Profile(),
