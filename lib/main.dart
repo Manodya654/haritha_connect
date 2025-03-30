@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/courses.dart';
-import 'package:haritha_connect/Editprofile.dart';
-import 'package:haritha_connect/ADEvent.dart';
+import 'package:haritha_connect/pages/courses.dart';
+import 'package:haritha_connect/pages/Editprofile.dart';
+import 'package:haritha_connect/pages/ADEvent.dart';
 
 
 

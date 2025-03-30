@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ui_connect/components/BottomNavBar.dart';
-import 'package:ui_connect/components/bookmarkButton.dart';
-import 'package:ui_connect/pages/profile_page.dart';
+import 'package:haritha_connect/components/BottomNavBar.dart';
+import 'package:haritha_connect/components/bookmarkButton.dart';
+import 'package:haritha_connect/pages/profile_page.dart';
 
 class EventDetails extends StatefulWidget {
   const EventDetails({super.key});

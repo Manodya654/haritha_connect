@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:haritha_connect/Components.dart';
+import 'package:haritha_connect/components/Components.dart';
 
 
   @override

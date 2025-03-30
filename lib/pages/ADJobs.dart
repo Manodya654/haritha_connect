@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Components.dart';
+import 'package:haritha_connect/components/Components.dart';
 
 void main() {
   runApp(
