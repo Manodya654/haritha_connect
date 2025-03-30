@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_connect/pages/login.dart';
+import 'package:haritha_connect/pages/login.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
