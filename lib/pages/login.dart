@@ -46,7 +46,10 @@ class _LoginState extends State<Login> {
       if (userDoc.exists) {
         bool initialLogin = userDoc['initialLogin'];
 
-        print(initialLogin);
+        // set isLoggedIn field in firebase true
+        await _firestore.collection("user").doc(uid).update({
+          "isLoggedIn": true,
+        });
 
         if (initialLogin == true) {
           // initialLogin = null;
