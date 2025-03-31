@@ -19,7 +19,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   TextEditingController  _LocationController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-
+  String  _eventType = "Workshop";
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -166,36 +166,28 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         children: [
                           OutlinedButton(
                             onPressed: () {
-                              print("Workshop clicked");
+                              setState(() {
+                                _eventType = "Workshop";
+                              });
                             },
                             style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              side: BorderSide(color: Colors.black),
+                              side: BorderSide(color: _eventType == "Workshop" ? Colors.blue : Colors.black),
                               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                             ),
-                            child: Text(
-                              "Workshop",
-                              style: TextStyle(color: Colors.black),
-                            ),
+                            child: Text("Workshop"),
                           ),
                           SizedBox(width: 20),
                           OutlinedButton(
                             onPressed: () {
-                              print("Event clicked");
+                              setState(() {
+                                _eventType = "Event";
+                              });
                             },
                             style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              side: BorderSide(color: Colors.black),
+                              side: BorderSide(color: _eventType == "Event" ? Colors.blue : Colors.black),
                               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                             ),
-                            child: Text(
-                              "Event",
-                              style: TextStyle(color: Colors.black),
-                            ),
+                            child: Text("Event"),
                           ),
                         ],
                       ),
@@ -214,6 +206,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 "OrganizerName": _OrganizerController.text,
                                 "EventDescription": _DescriptionController.text,
                                 "EventLocation": _LocationController.text,
+                                "EventType": _eventType,
                               };
 
                             await  DatabaseMethods().addEvent(addEventMap,id).then((value) {
