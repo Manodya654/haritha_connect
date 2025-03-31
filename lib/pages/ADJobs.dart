@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/Components.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:haritha_connect/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -17,12 +25,14 @@ class AddJobScreen extends StatefulWidget {
 
 class _AddJobScreenState extends State<AddJobScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  final TextEditingController _companyNameController = TextEditingController();
+  final TextEditingController _companyLogoController = TextEditingController();
   final TextEditingController _jobPositionController = TextEditingController();
   final TextEditingController _jobDescriptionController =
       TextEditingController();
   final TextEditingController _salaryController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _applyLinkController = TextEditingController();
 
   String _jobType = '';
 
@@ -32,14 +42,50 @@ class _AddJobScreenState extends State<AddJobScreen> {
     _jobDescriptionController.dispose();
     _salaryController.dispose();
     _locationController.dispose();
+    _applyLinkController.dispose();
     super.dispose();
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Job Added Successfully!")),
-      );
+      String timestamp = DateTime.now().toString();
+      // Create a map of data to send to Firestore
+      Map<String, dynamic> jobData = {
+        'companyName': _companyNameController.text,
+        'companyLogo': _companyLogoController.text,
+        'jobPosition': _jobPositionController.text,
+        'jobDescription': _jobDescriptionController.text,
+        'salary': _salaryController.text,
+        'location': _locationController.text,
+        'jobType': _jobType,
+        'applyLink': _applyLinkController.text,
+        'postedTime': timestamp,
+      };
+
+      try {
+        // Add the jobData to the "jobs" collection
+        await FirebaseFirestore.instance.collection('jobs').add(jobData);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Job Added Successfully!")),
+        );
+
+        // Optionally clear the form after successful submission
+        _companyNameController.clear();
+        _companyLogoController.clear();
+        _jobPositionController.clear();
+        _jobDescriptionController.clear();
+        _salaryController.clear();
+        _locationController.clear();
+        _applyLinkController.clear();
+        setState(() {
+          _jobType = '';
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error adding job: $e")),
+        );
+      }
     }
   }
 
@@ -82,6 +128,27 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     children: [
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _companyNameController,
+                        decoration: const InputDecoration(
+                          labelText: "Company Name",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? "Please enter Company Name" : null,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: _companyLogoController,
+                        decoration: const InputDecoration(
+                          labelText: "Company Logo",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter Company Logo URL"
+                            : null,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
                         controller: _jobPositionController,
                         decoration: const InputDecoration(
                           labelText: "Job Position",
@@ -121,7 +188,16 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         validator: (value) =>
                             value!.isEmpty ? "Please enter  location" : null,
                       ),
-
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        controller: _applyLinkController,
+                        decoration: const InputDecoration(
+                          labelText: "Apply Link",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? "Enter the link" : null,
+                      ),
                       const SizedBox(height: 30),
 
                       Padding(
