@@ -4,6 +4,7 @@ import 'package:haritha_connect/pages/courses.dart';
 import 'package:haritha_connect/pages/events.dart';
 import 'package:haritha_connect/pages/jobs.dart';
 import 'package:haritha_connect/pages/profile_page.dart';
+import 'package:haritha_connect/pages/Editprofile.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 
@@ -23,22 +24,7 @@ void main() async {
       '/courses': (context) => Courses(),
       '/account': (context) => ProfilePage(),
       '/adevent': (context) => AddEventScreen(),
+      '/editprofile':(context)=>EditProfileScreen(),
     },
   ));
 }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         useMaterial3: true,
-//       ),
-//       home: ProfilePage(),
-//     );
-//   }
-// }
