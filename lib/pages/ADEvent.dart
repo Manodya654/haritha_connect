@@ -185,10 +185,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               });
                             },
                             style: OutlinedButton.styleFrom(
+                              backgroundColor: _eventType == "Workshop" ? Colors.blue : Colors.transparent,
                               side: BorderSide(color: _eventType == "Workshop" ? Colors.blue : Colors.black),
                               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                             ),
-                            child: Text("Workshop"),
+                            child: Text(
+                              "Workshop",
+                              style: TextStyle(color: _eventType == "Workshop" ? Colors.white : Colors.black),
+                            ),
                           ),
                           SizedBox(width: 20),
                           OutlinedButton(
@@ -198,14 +202,17 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               });
                             },
                             style: OutlinedButton.styleFrom(
+                              backgroundColor: _eventType == "Event" ? Colors.blue : Colors.transparent,
                               side: BorderSide(color: _eventType == "Event" ? Colors.blue : Colors.black),
                               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                             ),
-                            child: Text("Event"),
+                            child: Text(
+                              "Event",
+                              style: TextStyle(color: _eventType == "Event" ? Colors.white : Colors.black),
+                            ),
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 30),
 
                       SizedBox(
