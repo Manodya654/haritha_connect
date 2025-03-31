@@ -17,7 +17,16 @@ class AddCourseScreen extends StatefulWidget {
 
 class _AddCourseScreenState extends State<AddCourseScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _courseNameController = TextEditingController();
+  final TextEditingController _courseDescriptionController =
+      TextEditingController();
+  final TextEditingController _courseInstructorController =
+      TextEditingController();
+  final TextEditingController _courseDurationController =
+      TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+
+  List<String> _selectedSubjects = [];
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -32,6 +41,16 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
         _dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _courseNameController.dispose();
+    _courseDescriptionController.dispose();
+    _courseInstructorController.dispose();
+    _courseDurationController.dispose();
+    _dateController.dispose();
+    super.dispose();
   }
 
   void _submitForm() {
@@ -81,6 +100,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                     children: [
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _courseNameController,
                         decoration: const InputDecoration(
                           labelText: "Course Name",
                           border: OutlineInputBorder(),
@@ -88,6 +108,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _courseDescriptionController,
                         decoration: const InputDecoration(
                           labelText: "Course Description",
                           border: OutlineInputBorder(),
@@ -95,6 +116,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _courseInstructorController,
                         decoration: const InputDecoration(
                           labelText: "Course Instructor",
                           border: OutlineInputBorder(),
@@ -102,6 +124,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _courseDurationController,
                         decoration: const InputDecoration(
                           labelText: "Course Duration",
                           border: OutlineInputBorder(),
