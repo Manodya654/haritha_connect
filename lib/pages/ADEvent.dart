@@ -62,13 +62,27 @@ class _AddEventScreenState extends State<AddEventScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Add Event",
-                      style: Kheaderstyle,
-                    ),
+                  const SizedBox(height: 40),   Row(
+                    children: [
+                      // Padding(
+                      // padding: EdgeInsets.only(left: 20.0),
+                      // child: IconButton(
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.arrow_back),
+                        color: Colors.white,
+                      ),
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "Add Event",
+                          style: Kheaderstyle,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

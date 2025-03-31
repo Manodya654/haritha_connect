@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/Components.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: EditProfileScreen(),
-    ),
-  );
-}
+
 
 class EditProfileScreen extends StatefulWidget {
   @override
