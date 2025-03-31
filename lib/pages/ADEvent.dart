@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/Components.dart';
+import 'package:random_string/random_string.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../service/Database.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AddEventScreen(),
-    ),
-  );
-}
 
 class AddEventScreen extends StatefulWidget {
   @override
@@ -17,8 +12,14 @@ class AddEventScreen extends StatefulWidget {
 
 class _AddEventScreenState extends State<AddEventScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController  _EventController = TextEditingController();
+  TextEditingController  _OrganizerController = TextEditingController();
+  TextEditingController  _DescriptionController = TextEditingController();
+  TextEditingController  _LocationController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -48,13 +49,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     }
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Event Submitted Successfully!")),
-      );
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +91,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     children: [
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _EventController,
                         decoration: const InputDecoration(
                           labelText: "Event Name",
                           border: OutlineInputBorder(),
@@ -104,6 +100,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _OrganizerController,
                         decoration: const InputDecoration(
                           labelText: "Organizer Name",
                           border: OutlineInputBorder(),
@@ -112,6 +109,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _DescriptionController,
                         decoration: const InputDecoration(
                           labelText: "Event Description",
                           border: OutlineInputBorder(),
@@ -120,6 +118,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _LocationController,
                         decoration: const InputDecoration(
                           labelText: "Event Location",
                           border: OutlineInputBorder(),
@@ -206,7 +205,36 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: _submitForm,
+                          onPressed: () async{
+                            String id = randomAlphaNumeric(10);
+                              Map<String,dynamic> addEventMap = {
+
+                                "id": id,
+                                "EventName": _EventController.text,
+                                "OrganizerName": _OrganizerController.text,
+                                "EventDescription": _DescriptionController.text,
+                                "EventLocation": _LocationController.text,
+                              };
+
+                            await  DatabaseMethods().addEvent(addEventMap,id).then((value) {
+                              Fluttertoast.showToast(
+                                msg: "Event added successfully",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );});
+
+                            _dateController.clear();
+                            _timeController.clear();
+                            _EventController.clear();
+                            _OrganizerController.clear();
+                            _DescriptionController.clear();
+                            _LocationController.clear();
+
+                            },
                           child: Text("Submit Event"),
                         ),
                       ),

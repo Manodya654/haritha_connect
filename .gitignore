@@ -101,3 +101,7 @@ lib/l10n/l10n.yaml
 /android/app/.cxx/Debug
 android/app/build.gradle.kts
 /android/app
+/android
+/ios/Runner.xcodeproj
+/ios/Runner.xcodeproj
+/macos/Runner.xcodeproj
