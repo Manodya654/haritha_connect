@@ -1,26 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/pages/signup.dart';
+import 'package:ui_connect/pages/Editprofile.dart';
+import 'package:ui_connect/pages/profile_page.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _MyAppState();
+  State<Login> createState() => _LoginState();
 }
 
-class _MyAppState extends State<Login> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Haritha Connect',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: SignInScreen(),
-    );
+class _LoginState extends State<Login> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  String _errorMessage = '';
+
+  // Function to handle login
+  void _login() async {
+    setState(() {
+      _errorMessage = ''; // Clear previous errors
+      _isLoading = true;
+    });
+
+    try {
+      // Attempt to sign in the user with email and password
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      // Get the UID of the logged-in user
+      String uid = userCredential.user!.uid;
+
+      // Fetch the user document from Firestore
+      DocumentSnapshot userDoc =
+          await _firestore.collection("user").doc(uid).get();
+
+      // Check if the user document exists and fetch the type field
+      if (userDoc.exists) {
+        bool initialLogin = userDoc['initialLogin'];
+
+        print(initialLogin);
+
+        if (initialLogin == true) {
+          // initialLogin = null;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => EditProfileScreen()),
+          );
+        } else {
+          // initialLogin = null;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ProfilePage()),
+          );
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'An error occurred: ${e.message}';
+      });
+    }
   }
-}
 
-class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +91,9 @@ class SignInScreen extends StatelessWidget {
             SizedBox(
               width: 280,
               child: TextField(
+                controller: _emailController,
+                autocorrect: false,
+                enableSuggestions: false,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(
@@ -54,6 +106,9 @@ class SignInScreen extends StatelessWidget {
             SizedBox(
               width: 280,
               child: TextField(
+                controller: _passwordController,
+                autocorrect: false,
+                enableSuggestions: false,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -64,13 +119,18 @@ class SignInScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 25),
+            if (_errorMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Text(
+                  _errorMessage,
+                  style: TextStyle(color: Colors.red, fontSize: 14),
+                ),
+              ),
             SizedBox(
               width: 280, // Increased width
               child: ElevatedButton(
-                onPressed: () {
-                  // Handle Sign In logic
-                },
-                child: Text('Sign In', style: TextStyle(color: Colors.white)),
+                onPressed: _isLoading ? null : _login,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   padding: EdgeInsets.symmetric(vertical: 20),
@@ -78,6 +138,9 @@ class SignInScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
+                child: _isLoading
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Text('Sign In', style: TextStyle(color: Colors.white)),
               ),
             ),
             SizedBox(height: 15),

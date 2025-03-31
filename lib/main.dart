@@ -3,17 +3,27 @@ import 'package:haritha_connect/pages/courses.dart';
 import 'package:haritha_connect/pages/events.dart';
 import 'package:haritha_connect/pages/jobs.dart';
 import 'package:haritha_connect/pages/profile_page.dart';
+import 'package:ui_connect/pages/login.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
   // runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
     ),
-    initialRoute: '/home',
+    initialRoute: '/login',
     routes: {
+      '/login': (context) => Login(),
       '/home': (context) => Jobs(),
       '/events': (context) => Events(),
       '/courses': (context) => Courses(),
@@ -21,19 +31,3 @@ void main() {
     },
   ));
 }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         useMaterial3: true,
-//       ),
-//       home: ProfilePage(),
-//     );
-//   }
-// }
