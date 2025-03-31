@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/Components.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AddCourseScreen(),
-    ),
-  );
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddCourseScreen extends StatefulWidget {
   @override
@@ -17,27 +11,91 @@ class AddCourseScreen extends StatefulWidget {
 
 class _AddCourseScreenState extends State<AddCourseScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _courseNameController = TextEditingController();
+  final TextEditingController _courseDescriptionController =
+      TextEditingController();
+  final TextEditingController _courseInstructorController =
+      TextEditingController();
+  final TextEditingController _courseDurationController =
+      TextEditingController();
+  // final TextEditingController _dateController = TextEditingController();
 
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        _dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
-      });
-    }
+  String? selectedButton;
+  void _onButtonPressed(String buttonText) {
+    setState(() {
+      selectedButton = buttonText;
+    });
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
+  // Future<void> _selectDate(BuildContext context) async {
+  //   DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2101),
+  //   );
+
+  //   if (pickedDate != null) {
+  //     setState(() {
+  //       _dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
+  //     });
+  //   }
+  // }
+
+  void _submitForm() async {
+    if (_formKey.currentState!.validate() &&
+        _courseNameController.text.isNotEmpty &&
+        _courseDescriptionController.text.isNotEmpty &&
+        _courseInstructorController.text.isNotEmpty &&
+        _courseDurationController.text.isNotEmpty &&
+        selectedButton != null) {
+      try {
+        // Get the current user
+        User? user = FirebaseAuth.instance.currentUser;
+
+        if (user != null) {
+          DocumentReference userRef =
+              FirebaseFirestore.instance.collection("user").doc(user.uid);
+
+          // Prepare data
+          Map<String, dynamic> courseData = {
+            "name": _courseNameController.text,
+            "description": _courseDescriptionController.text,
+            "taughtBy": _courseInstructorController.text,
+            "duration": _courseDurationController.text,
+            "subject": selectedButton,
+            "userCreated": userRef, // Reference to the current user
+            "addedDate": FieldValue.serverTimestamp(), // Current date & time
+          };
+
+          await FirebaseFirestore.instance.collection("course").add(courseData);
+
+          // Show success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Course Added Successfully!")),
+          );
+
+          // Clear form fields
+          _courseNameController.clear();
+          _courseDescriptionController.clear();
+          _courseInstructorController.clear();
+          _courseDurationController.clear();
+          setState(() {
+            selectedButton = null;
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("User not authenticated")),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error adding course: $e")),
+        );
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Course Added Successfully!")),
+        SnackBar(content: Text("Please fill in all fields")),
       );
     }
   }
@@ -54,13 +112,24 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Add Course",
-                      style: Kheaderstyle,
-                    ),
-                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.arrow_back),
+                        color: Colors.white,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "Add Course",
+                          style: Kheaderstyle,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -81,6 +150,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                     children: [
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _courseNameController,
                         decoration: const InputDecoration(
                           labelText: "Course Name",
                           border: OutlineInputBorder(),
@@ -88,13 +158,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Course Description",
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      TextFormField(
+                        controller: _courseInstructorController,
                         decoration: const InputDecoration(
                           labelText: "Course Instructor",
                           border: OutlineInputBorder(),
@@ -102,6 +166,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _courseDurationController,
                         decoration: const InputDecoration(
                           labelText: "Course Duration",
                           border: OutlineInputBorder(),
@@ -109,19 +174,30 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                       ),
 
                       const SizedBox(height: 30),
-
                       TextFormField(
-                        controller: _dateController,
-                        readOnly: true,
+                        controller: _courseDescriptionController,
+                        minLines: 1,
+                        maxLines: 3,
                         decoration: const InputDecoration(
-                          labelText: "Event Date",
+                          labelText: "Course Description",
                           border: OutlineInputBorder(),
-                          suffixIcon: Icon(Icons.calendar_today),
                         ),
-                        onTap: () => _selectDate(context),
-                        validator: (value) =>
-                            value!.isEmpty ? "Please select event date" : null,
                       ),
+
+                      // const SizedBox(height: 30),
+
+                      // TextFormField(
+                      //   controller: _dateController,
+                      //   readOnly: true,
+                      //   decoration: const InputDecoration(
+                      //     labelText: "Event Date",
+                      //     border: OutlineInputBorder(),
+                      //     suffixIcon: Icon(Icons.calendar_today),
+                      //   ),
+                      //   onTap: () => _selectDate(context),
+                      //   validator: (value) =>
+                      //       value!.isEmpty ? "Please select event date" : null,
+                      // ),
                       const SizedBox(height: 30),
                       // Skills Section
                       Text(
@@ -138,30 +214,66 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                             children: [
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Ai clicked");
+                                  _onButtonPressed("AI");
                                 },
-                                style: kOutlineButtonStyle,
-                                child: Text("Ai"),
+                                style: selectedButton == "AI"
+                                    ? kOutlineButtonStyle.copyWith(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.blue),
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.white),
+                                      )
+                                    : kOutlineButtonStyle,
+                                child: Text("AI"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Machine Learning Clicked");
+                                  _onButtonPressed("Machine Learning");
                                 },
-                                style: kOutlineButtonStyle,
+                                style: selectedButton == "Machine Learning"
+                                    ? kOutlineButtonStyle.copyWith(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.blue),
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.white),
+                                      )
+                                    : kOutlineButtonStyle,
                                 child: Text("Machine Learning"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Data Science clicked");
+                                  _onButtonPressed("Data Science");
                                 },
-                                style: kOutlineButtonStyle,
+                                style: selectedButton == "Data Science"
+                                    ? kOutlineButtonStyle.copyWith(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.blue),
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.white),
+                                      )
+                                    : kOutlineButtonStyle,
                                 child: Text("Data Science"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Computer Science clicked");
+                                  _onButtonPressed("Computer Science");
                                 },
-                                style: kOutlineButtonStyle,
+                                style: selectedButton == "Computer Science"
+                                    ? kOutlineButtonStyle.copyWith(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.blue),
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Colors.white),
+                                      )
+                                    : kOutlineButtonStyle,
                                 child: Text("Computer Science"),
                               ),
                             ],
