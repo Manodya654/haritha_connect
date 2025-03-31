@@ -18,6 +18,23 @@ class AddJobScreen extends StatefulWidget {
 class _AddJobScreenState extends State<AddJobScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _jobPositionController = TextEditingController();
+  final TextEditingController _jobDescriptionController =
+      TextEditingController();
+  final TextEditingController _salaryController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+
+  String _jobType = '';
+
+  @override
+  void dispose() {
+    _jobPositionController.dispose();
+    _jobDescriptionController.dispose();
+    _salaryController.dispose();
+    _locationController.dispose();
+    super.dispose();
+  }
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -65,6 +82,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     children: [
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _jobPositionController,
                         decoration: const InputDecoration(
                           labelText: "Job Position",
                           border: OutlineInputBorder(),
@@ -74,6 +92,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _jobDescriptionController,
                         decoration: const InputDecoration(
                           labelText: "Job Description",
                           border: OutlineInputBorder(),
@@ -84,6 +103,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _salaryController,
                         decoration: const InputDecoration(
                           labelText: "Salary",
                           border: OutlineInputBorder(),
@@ -93,6 +113,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
+                        controller: _locationController,
                         decoration: const InputDecoration(
                           labelText: "Location",
                           border: OutlineInputBorder(),
@@ -118,6 +139,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           children: [
                             OutlinedButton(
                               onPressed: () {
+                                setState(() {
+                                  _jobType = "Full Time";
+                                });
                                 print("Full Time clicked");
                               },
                               style: OutlinedButton.styleFrom(
@@ -136,6 +160,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             SizedBox(width: 20),
                             OutlinedButton(
                               onPressed: () {
+                                setState(() {
+                                  _jobType = "Remote working";
+                                });
                                 print("Remote working clicked");
                               },
                               style: OutlinedButton.styleFrom(
@@ -154,6 +181,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             SizedBox(width: 20),
                             OutlinedButton(
                               onPressed: () {
+                                setState(() {
+                                  _jobType = "Hourly";
+                                });
                                 print("Hourly working clicked");
                               },
                               style: OutlinedButton.styleFrom(
