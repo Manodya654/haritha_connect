@@ -3,7 +3,10 @@ import 'package:haritha_connect/components/BottomNavBar.dart';
 import 'package:haritha_connect/pages/course_details.dart';
 
 
+import 'package:ui_connect/pages/ADCourse.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Courses extends StatefulWidget {
   const Courses({super.key});
@@ -13,6 +16,44 @@ class Courses extends StatefulWidget {
 }
 
 class _CoursesState extends State<Courses> {
+  // String? userType; // Store user type
+
+  Future<String?> getUserType() async {
+    try {
+      // Get the current user
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Reference to the user's document in Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(user.uid)
+            .get();
+
+        // Check if the document exists and contains the 'type' field
+        if (userDoc.exists && userDoc.data() != null) {
+          Map<String, dynamic> userData =
+              userDoc.data() as Map<String, dynamic>;
+
+          if (userData.containsKey('type')) {
+            String userType = userData['type'];
+            print('User Type: $userType');
+            return userData['type'];
+          } else {
+            print('Type field not found in user document.');
+          }
+        } else {
+          print('User document does not exist.');
+        }
+      } else {
+        print('No user is signed in.');
+      }
+    } catch (e) {
+      print('Error fetching user type: $e');
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,13 +67,62 @@ class _CoursesState extends State<Courses> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                CategoryButton(label: 'Courses', color: Colors.white70),
-                const SizedBox(width: 10),
-              ],
+            FutureBuilder<String?>(
+              future: getUserType(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                }
+                String? userType = snapshot.data;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CategoryButton(label: 'Courses', color: Colors.white70),
+                    const SizedBox(width: 10),
+                    // Show the button only if userType is "staff"
+                    if (userType == "staff")
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddCourseScreen()),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.add,
+                          color: Colors.deepPurple,
+                        ),
+                      ),
+
+                    const SizedBox(width: 10),
+                  ],
+                );
+              },
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     CategoryButton(label: 'Courses', color: Colors.white70),
+            //     const SizedBox(width: 10),
+            //       IconButton(
+            //         onPressed: () {
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (context) =>
+            //                     AddCourseScreen()), // Replace with your actual AddCourse page widget
+            //           );
+            //         },
+            //         icon: Icon(
+            //           Icons.add,
+            //           color: Colors.deepPurple,
+            //         ),
+            //       ),
+
+            //     const SizedBox(width: 10),
+            //   ],
+            // ),
             SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
