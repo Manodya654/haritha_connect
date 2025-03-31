@@ -161,28 +161,57 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                             children: [
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Ai clicked");
+                                  setState(() {
+                                    if (_selectedSubjects.contains("AI")) {
+                                      _selectedSubjects.remove("AI");
+                                    } else {
+                                      _selectedSubjects.add("AI");
+                                    }
+                                  });
                                 },
                                 style: kOutlineButtonStyle,
                                 child: Text("Ai"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Machine Learning Clicked");
+                                  setState(() {
+                                    if (_selectedSubjects
+                                        .contains("Machine Learning")) {
+                                      _selectedSubjects
+                                          .remove("Machine Learning");
+                                    } else {
+                                      _selectedSubjects.add("Machine Learning");
+                                    }
+                                  });
                                 },
                                 style: kOutlineButtonStyle,
                                 child: Text("Machine Learning"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Data Science clicked");
+                                  setState(() {
+                                    if (_selectedSubjects
+                                        .contains("Data Science")) {
+                                      _selectedSubjects.remove("Data Science");
+                                    } else {
+                                      _selectedSubjects.add("Data Science");
+                                    }
+                                  });
                                 },
                                 style: kOutlineButtonStyle,
                                 child: Text("Data Science"),
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  print("Computer Science clicked");
+                                  setState(() {
+                                    if (_selectedSubjects
+                                        .contains("Computer Science")) {
+                                      _selectedSubjects
+                                          .remove("Computer Science");
+                                    } else {
+                                      _selectedSubjects.add("Computer Science");
+                                    }
+                                  });
                                 },
                                 style: kOutlineButtonStyle,
                                 child: Text("Computer Science"),
