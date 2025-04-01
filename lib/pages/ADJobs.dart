@@ -3,7 +3,6 @@ import 'package:haritha_connect/components/Components.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:haritha_connect/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,44 +35,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
   final TextEditingController _applyLinkController = TextEditingController();
 
   String _jobType = '';
-  String? userType;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchUserType();
-  }
-
-  Future<void> fetchUserType() async {
-    String? type = await getUserType();
-    setState(() {
-      userType = type;
-    });
-  }
-
-  Future<String?> getUserType() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('user')
-            .doc(user.uid)
-            .get();
-
-        if (userDoc.exists && userDoc.data() != null) {
-          Map<String, dynamic> userData =
-              userDoc.data() as Map<String, dynamic>;
-          if (userData.containsKey('type')) {
-            return userData['type'];
-          }
-        }
-      }
-    } catch (e) {
-      print('Error fetching user type: $e');
-    }
-    return null;
-  }
 
   @override
   void dispose() {
