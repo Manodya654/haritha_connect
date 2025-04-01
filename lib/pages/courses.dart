@@ -170,7 +170,7 @@ class SearchBar extends StatelessWidget {
         Expanded(
           child: TextField(
             decoration: InputDecoration(
-              hintText: "Search job here...",
+              hintText: "Search course here...",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
                 borderSide: BorderSide.none,
