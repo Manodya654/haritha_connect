@@ -24,6 +24,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       TextEditingController();
   final TextEditingController _courseDurationController =
       TextEditingController();
+  final TextEditingController _courseJoinLinkController =
+      TextEditingController();
 
   String? selectedButton;
   String? _savedImagePath;
@@ -95,6 +97,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
         _courseDescriptionController.text.isNotEmpty &&
         _courseInstructorController.text.isNotEmpty &&
         _courseDurationController.text.isNotEmpty &&
+        _courseJoinLinkController.text.isNotEmpty &&
         selectedButton != null) {
       try {
         // Get the current user
@@ -110,6 +113,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
             "description": _courseDescriptionController.text,
             "taughtBy": _courseInstructorController.text,
             "duration": _courseDurationController.text,
+            "joinLink": _courseJoinLinkController.text,
             "subject": selectedButton,
             "userCreated": userRef, // Reference to the current user
             "addedDate": FieldValue.serverTimestamp(), // Current date & time
@@ -128,6 +132,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
           _courseDescriptionController.clear();
           _courseInstructorController.clear();
           _courseDurationController.clear();
+          _courseJoinLinkController.clear();
           setState(() {
             selectedButton = null;
             _savedImagePath = null;
@@ -230,6 +235,15 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                         maxLines: 3,
                         decoration: const InputDecoration(
                           labelText: "Course Description",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        controller: _courseJoinLinkController,
+                        decoration: const InputDecoration(
+                          labelText: "Course Join Url",
                           border: OutlineInputBorder(),
                         ),
                       ),

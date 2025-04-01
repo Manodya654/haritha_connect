@@ -50,13 +50,43 @@ In the signIn page first create a user with an nsbm mail and a custom password.
 
   as following
 
-    <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  ```
 
-      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-      <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+  <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-      <application
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+
+    <application
+
+  ```
 
 - **pubspec.yaml**
   - Add image_picker, path_provider, permission_handler dependencies and run flutter pub get
+
+# Changes Done when working on Course Details
+
+## Files and their Changes
+
+- **android\app\src\main\AndroidManifest.xml**
+
+  - Updated intents of the app for being able to open links
+
+  ```
+  <queries>
+        <intent>
+            <!-- Old intents -->
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+
+            <!-- New intents -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https"/>
+        </intent>
+    </queries>
+
+  ```
