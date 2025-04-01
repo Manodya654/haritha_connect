@@ -14,4 +14,10 @@ class DatabaseMethods{
             .doc(id)
             .set(addprofileMap);
       }
+
+      Future<Stream<QuerySnapshot>> getevent()async{
+        return await FirebaseFirestore.instance
+            .collection("events")
+            .snapshots();
+      }
 }

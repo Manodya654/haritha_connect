@@ -228,7 +228,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 "EventDescription": _DescriptionController.text,
                                 "EventLocation": _LocationController.text,
                                 "EventType": _eventType,
+                                "date": _dateController.text,
+                                "time": _timeController.text,
                               };
+
+                            _dateController.clear();
+                            _timeController.clear();
+                            _EventController.clear();
+                            _OrganizerController.clear();
+                            _DescriptionController.clear();
+                            _LocationController.clear();
 
                             await  DatabaseMethods().addEvent(addEventMap,id).then((value) {
                               Fluttertoast.showToast(
@@ -240,13 +249,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 textColor: Colors.white,
                                 fontSize: 16.0
                             );});
-
-                            _dateController.clear();
-                            _timeController.clear();
-                            _EventController.clear();
-                            _OrganizerController.clear();
-                            _DescriptionController.clear();
-                            _LocationController.clear();
 
                             },
                           child: Text("Submit Event"),
