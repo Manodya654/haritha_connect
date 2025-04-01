@@ -1,5 +1,7 @@
 # haritha_connect
 
+# Login and Signup Pages Changes
+
 ## Changes in the project files
 
 change minsdk in andriod/app/build.gradle to 23.
@@ -31,3 +33,30 @@ In the signIn page first create a user with an nsbm mail and a custom password.
 
 - **To be able to see/navigate to the add_course page**
   - Login with a staff account
+
+# Add Courses Page Changes
+
+## Files and their Changes
+
+- **android\settings.gradle**
+  - "com.android.application" version changed to "8.2.1"
+- **android\app\src\main\AndroidManifest.xml**
+
+  - Add below lines (To be able to request permission from user to modify files)
+
+  "<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>"
+  "<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>"
+  "<uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>"
+
+  as following
+
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+      <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+
+      <application
+
+- **pubspec.yaml**
+  - Add image_picker, path_provider, permission_handler dependencies and run flutter pub get
