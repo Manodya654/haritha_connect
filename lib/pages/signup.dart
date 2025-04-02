@@ -83,125 +83,112 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } finally {
       setState(() => _isLoading = false);
     }
-
-    //   try {
-    //     await _auth.createUserWithEmailAndPassword(
-    //       email: _emailController.text.trim(),
-    //       password: _passwordController.text.trim(),
-    //     );
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text("Account created successfully!")),
-    //     );
-    //     Navigator.pushReplacement(
-    //         context, MaterialPageRoute(builder: (context) => Login()));
-    //   } on FirebaseAuthException catch (e) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text(e.message ?? "An error occurred")),
-    //     );
-    //   } finally {
-    //     setState(() => _isLoading = false);
-    //   }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/harithaimage.jpg',
-              height: 200,
-            ),
-            SizedBox(height: 60),
-            Text(
-              'Sign Up',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 280,
-              child: TextField(
-                controller: _emailController,
-                autocorrect: false,
-                enableSuggestions: false,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  height:
+                      MediaQuery.of(context).size.height * 0.1), // Add space
+              Image.asset(
+                'assets/images/harithaimage.jpg',
+                height: 200,
+              ),
+              SizedBox(height: 60),
+              Text(
+                'Sign Up',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                width: 280,
+                child: TextField(
+                  controller: _emailController,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 15),
-            SizedBox(
-              width: 280,
-              child: TextField(
-                controller: _passwordController,
-                obscureText: true,
-                autocorrect: false,
-                enableSuggestions: false,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+              SizedBox(height: 15),
+              SizedBox(
+                width: 280,
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 15),
-            SizedBox(
-              width: 280,
-              child: TextField(
-                controller: _confirmPasswordController,
-                obscureText: true,
-                autocorrect: false,
-                enableSuggestions: false,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+              SizedBox(height: 15),
+              SizedBox(
+                width: 280,
+                child: TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 30),
-            SizedBox(
-              width: 280, // Increased width
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _signUp,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // Blue button
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+              SizedBox(height: 30),
+              SizedBox(
+                width: 280, // Increased width
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _signUp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Blue button
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
+                  child: _isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text('Sign Up', style: TextStyle(color: Colors.white)),
                 ),
-                child: _isLoading
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : Text('Sign Up', style: TextStyle(color: Colors.white)),
               ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Already have an account?"),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Login()),
-                    );
-                  },
-                  child: Text('Sign In',
-                      style: TextStyle(color: Colors.blue)), // Blue text
-                ),
-              ],
-            ),
-          ],
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Already have an account?"),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      );
+                    },
+                    child: Text('Sign In',
+                        style: TextStyle(color: Colors.blue)), // Blue text
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
