@@ -19,8 +19,23 @@ class Courses extends StatefulWidget {
 class _CoursesState extends State<Courses> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = "";
+  String? userType;
 
-  // String? userType; // Store user type
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserType();
+  }
+
+  // Fetch userType and store it in state
+  Future<void> _fetchUserType() async {
+    String? type = await getUserType();
+    if (mounted) {
+      setState(() {
+        userType = type;
+      });
+    }
+  }
 
   Future<String?> getUserType() async {
     try {
@@ -144,24 +159,59 @@ class _CoursesState extends State<Courses> {
                         var courseData =
                             courseDoc.data() as Map<String, dynamic>;
                         String courseId = courseDoc.id;
+                        //         return FutureBuilder(
+                        //           future: getUserType(),
+                        //           builder: (context, snapshot) {
+                        // if (snapshot.connectionState == ConnectionState.waiting) {
+                        //   return CircularProgressIndicator();
+                        // }
+                        // String? userType = snapshot.data;
+                        //           return GestureDetector(
+                        //             onTap: () {
+                        //               Navigator.push(
+                        //                 context,
+                        //                 MaterialPageRoute(
+                        //                     builder: (context) => CourseDetailsPage(
+                        //                           courseId: courseId,
+                        //                         )),
+                        //               );
+                        //             },
+
+                        //         //     child: CourseCard(
+                        //         //       courseId: courseId,
+                        //         //       coursePic: courseData['coursePic'] ?? 'null',
+                        //         //       name: courseData['name'] ?? 'Untitled',
+                        //         //       description: courseData['description'] ??
+                        //         //           'No description available',
+                        //         //       duration: courseData['duration'] ?? 'N/A',
+                        //         //       subject: courseData['subject'] ?? 'Unknown',
+                        //         //       if (userType == "staff")
+                        //         //       userType: "staff";
+                        //         //     ),
+                        //         //   );},
+                        //         // );
+
                         return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CourseDetailsPage(
-                                          courseId: courseId,
-                                        )),
-                              );
-                            },
-                            child: CourseCard(
-                              coursePic: courseData['coursePic'] ?? 'null',
-                              name: courseData['name'] ?? 'Untitled',
-                              description: courseData['description'] ??
-                                  'No description available',
-                              duration: courseData['duration'] ?? 'N/A',
-                              subject: courseData['subject'] ?? 'Unknown',
-                            ));
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CourseDetailsPage(
+                                        courseId: courseId,
+                                      )),
+                            );
+                          },
+                          child: CourseCard(
+                            courseId: courseId,
+                            coursePic: courseData['coursePic'] ?? 'null',
+                            name: courseData['name'] ?? 'Untitled',
+                            description: courseData['description'] ??
+                                'No description available',
+                            duration: courseData['duration'] ?? 'N/A',
+                            subject: courseData['subject'] ?? 'Unknown',
+                            userType: userType ?? "",
+                          ),
+                        );
                       },
                     );
                   }),

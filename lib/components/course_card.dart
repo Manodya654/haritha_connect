@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 class CourseCard extends StatelessWidget {
+  final String courseId;
   final String coursePic;
   final String name;
   final String description;
   final String duration;
   final String subject;
+  final String userType;
 
   CourseCard({
+    required this.courseId,
     required this.coursePic,
     required this.name,
     required this.description,
     required this.duration,
     required this.subject,
+    required this.userType,
   });
 
   @override
@@ -39,9 +43,42 @@ class CourseCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      name,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    if (userType == "staff")
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => AddCourseScreen(
+                              //               courseId: courseId,
+                              //             )),
+                              //   );
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.black,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      )
+                  ],
                 ),
                 SizedBox(height: 5),
                 Text(
