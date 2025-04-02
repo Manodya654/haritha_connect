@@ -1,0 +1,24 @@
+name: search_testing
+description: A Flutter project to test search functionality with Firebase.
+
+publish_to: 'none' # Remove this line if you're publishing to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^2.32.0  # Latest stable version
+  cloud_firestore: ^4.15.5  # Latest stable version
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
