@@ -159,38 +159,6 @@ class _CoursesState extends State<Courses> {
                         var courseData =
                             courseDoc.data() as Map<String, dynamic>;
                         String courseId = courseDoc.id;
-                        //         return FutureBuilder(
-                        //           future: getUserType(),
-                        //           builder: (context, snapshot) {
-                        // if (snapshot.connectionState == ConnectionState.waiting) {
-                        //   return CircularProgressIndicator();
-                        // }
-                        // String? userType = snapshot.data;
-                        //           return GestureDetector(
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                 context,
-                        //                 MaterialPageRoute(
-                        //                     builder: (context) => CourseDetailsPage(
-                        //                           courseId: courseId,
-                        //                         )),
-                        //               );
-                        //             },
-
-                        //         //     child: CourseCard(
-                        //         //       courseId: courseId,
-                        //         //       coursePic: courseData['coursePic'] ?? 'null',
-                        //         //       name: courseData['name'] ?? 'Untitled',
-                        //         //       description: courseData['description'] ??
-                        //         //           'No description available',
-                        //         //       duration: courseData['duration'] ?? 'N/A',
-                        //         //       subject: courseData['subject'] ?? 'Unknown',
-                        //         //       if (userType == "staff")
-                        //         //       userType: "staff";
-                        //         //     ),
-                        //         //   );},
-                        //         // );
-
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(

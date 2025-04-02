@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ui_connect/pages/edit_course.dart';
+
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ui_connect/pages/edit_course.dart';
 
 class CourseCard extends StatelessWidget {
   final String courseId;
@@ -19,6 +24,30 @@ class CourseCard extends StatelessWidget {
     required this.subject,
     required this.userType,
   });
+
+  // Function to delete the course from Firestore
+  Future<void> _deleteCourse(BuildContext context) async {
+    try {
+      print("Deleting course with ID: $courseId");
+      await FirebaseFirestore.instance
+          .collection('course')
+          .doc(courseId)
+          .delete();
+
+      // Ensure Snackbar is shown after the widget tree is stable
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Course deleted successfully!')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error deleting course: $e')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +85,13 @@ class CourseCard extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => AddCourseScreen(
-                              //               courseId: courseId,
-                              //             )),
-                              //   );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditCourse(
+                                          CourseId: courseId,
+                                        )),
+                              );
                             },
                             icon: Icon(
                               Icons.edit,
@@ -70,7 +99,33 @@ class CourseCard extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('Confirm Delete'),
+                                  content: Text(
+                                      'Are you sure you want to delete this course?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          context), // Close dialog
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(
+                                            context); // Close dialog first
+                                        await _deleteCourse(
+                                            context); // Then delete course
+                                      },
+                                      child: Text('Delete',
+                                          style: TextStyle(color: Colors.red)),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                             icon: Icon(
                               Icons.delete,
                               color: Colors.black,
