@@ -76,10 +76,6 @@ class FeaturedEventCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Featured Event",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
           SizedBox(height: 8),
           Container(
             width: 300,
@@ -89,7 +85,7 @@ class FeaturedEventCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(16), // Rounded corners
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center, // Center items vertically
               children: [
                 // Left side with text content
                 Expanded(
@@ -124,7 +120,7 @@ class FeaturedEventCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 10), // Space between text and image
-                // Right-side profile picture
+                // Right-side profile picture - now will be centered vertically
                 CircleAvatar(
                   radius: 30,
                   backgroundImage: AssetImage(profileImage),
