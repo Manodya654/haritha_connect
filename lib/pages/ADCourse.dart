@@ -1,0 +1,243 @@
+import 'package:flutter/material.dart';
+import 'package:haritha_connect/components/Components.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AddCourseScreen(),
+    ),
+  );
+}
+
+class AddCourseScreen extends StatefulWidget {
+  @override
+  _AddCourseScreenState createState() => _AddCourseScreenState();
+}
+
+class _AddCourseScreenState extends State<AddCourseScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _courseNameController = TextEditingController();
+  final TextEditingController _courseDescriptionController =
+      TextEditingController();
+  final TextEditingController _courseInstructorController =
+      TextEditingController();
+  final TextEditingController _courseDurationController =
+      TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+
+  List<String> _selectedSubjects = [];
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _courseNameController.dispose();
+    _courseDescriptionController.dispose();
+    _courseInstructorController.dispose();
+    _courseDurationController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Course Added Successfully!")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: CurvedBackground(
+              height: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      "Add Course",
+                      style: Kheaderstyle,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 130,
+            left: 20,
+            right: 20,
+            bottom: 20,
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        controller: _courseNameController,
+                        decoration: const InputDecoration(
+                          labelText: "Course Name",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        controller: _courseDescriptionController,
+                        decoration: const InputDecoration(
+                          labelText: "Course Description",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        controller: _courseInstructorController,
+                        decoration: const InputDecoration(
+                          labelText: "Course Instructor",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        controller: _courseDurationController,
+                        decoration: const InputDecoration(
+                          labelText: "Course Duration",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      TextFormField(
+                        controller: _dateController,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                          labelText: "Event Date",
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        onTap: () => _selectDate(context),
+                        validator: (value) =>
+                            value!.isEmpty ? "Please select event date" : null,
+                      ),
+                      const SizedBox(height: 30),
+                      // Skills Section
+                      Text(
+                        "Subject",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Wrap(
+                            spacing: 20,
+                            children: [
+                              OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (_selectedSubjects.contains("AI")) {
+                                      _selectedSubjects.remove("AI");
+                                    } else {
+                                      _selectedSubjects.add("AI");
+                                    }
+                                  });
+                                },
+                                style: kOutlineButtonStyle,
+                                child: Text("Ai"),
+                              ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (_selectedSubjects
+                                        .contains("Machine Learning")) {
+                                      _selectedSubjects
+                                          .remove("Machine Learning");
+                                    } else {
+                                      _selectedSubjects.add("Machine Learning");
+                                    }
+                                  });
+                                },
+                                style: kOutlineButtonStyle,
+                                child: Text("Machine Learning"),
+                              ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (_selectedSubjects
+                                        .contains("Data Science")) {
+                                      _selectedSubjects.remove("Data Science");
+                                    } else {
+                                      _selectedSubjects.add("Data Science");
+                                    }
+                                  });
+                                },
+                                style: kOutlineButtonStyle,
+                                child: Text("Data Science"),
+                              ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (_selectedSubjects
+                                        .contains("Computer Science")) {
+                                      _selectedSubjects
+                                          .remove("Computer Science");
+                                    } else {
+                                      _selectedSubjects.add("Computer Science");
+                                    }
+                                  });
+                                },
+                                style: kOutlineButtonStyle,
+                                child: Text("Computer Science"),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _submitForm,
+                          child: Text("Add Course"),
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

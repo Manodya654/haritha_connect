@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/BottomNavBar.dart';
 import 'package:haritha_connect/pages/job_details.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Jobs extends StatefulWidget {
   const Jobs({super.key});
@@ -41,128 +40,92 @@ class _JobsState extends State<Jobs> {
               padding: EdgeInsets.all(20),
             ),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream:
-                    FirebaseFirestore.instance.collection('jobs').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text('No jobs available'));
-                  }
-
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      // Get job data from Firestore
-                      var jobData = snapshot.data!.docs[index].data()
-                          as Map<String, dynamic>;
-
-                      List<Color> colors = [
-                        Colors.blue,
-                        Colors.pink,
-                        Colors.green,
-                        Colors.red,
-                        Colors.yellow,
-                      ];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => JobDetailsPage()),
-                          );
-                        },
-                        child: Card(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  List<Color> colors = [
+                    Colors.blue,
+                    Colors.pink,
+                    Colors.green,
+                    Colors.red,
+                    Colors.yellow,
+                  ];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => JobDetailsPage()),
+                      );
+                    },
+                    child: Card(
+                      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
-                                Row(
+                                CircleAvatar(
+                                    backgroundColor: colors[index], radius: 20),
+                                SizedBox(width: 8),
+                                Column(
                                   children: [
-                                    CircleAvatar(
-                                        backgroundColor:
-                                            colors[index % colors.length],
-                                        radius: 20,
-                                        backgroundImage:
-                                            jobData['companyLogo'] != null &&
-                                                    jobData['companyLogo']
-                                                        .toString()
-                                                        .isNotEmpty
-                                                ? NetworkImage(
-                                                    jobData['companyLogo'])
-                                                : null),
-                                    SizedBox(width: 8),
-                                    Column(
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              jobData['jobPosition'] ??
-                                                  'Unknown Position',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(width: 30),
-                                            Text(
-                                              jobData['salary'] ??
-                                                  'Salary not specified',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey[700]),
-                                            ),
-                                          ],
+                                        Text(
+                                          index == 0
+                                              ? 'Web Developer'
+                                              : 'Software Engineer',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(width: index == 0 ? 50 : 30),
+                                        Text(
+                                          '250k - 315k USD/year',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey[700]),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 10),
-                                Wrap(
-                                  spacing: 6,
-                                  children: [
-                                    Chip(
-                                        label: Text(
-                                            jobData['jobType'] ?? 'Full-Time'),
-                                        backgroundColor: Colors.white),
-                                    Chip(
-                                        label: Text('Hybrid'),
-                                        backgroundColor: Colors.grey[100]),
-                                    Chip(
-                                        label: Text(
-                                            jobData['location'] ?? 'Unknown'),
-                                        backgroundColor: Colors.white),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                  jobData['jobDescription'] ??
-                                      'No description available',
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey[700]),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
                               ],
                             ),
-                          ),
+                            SizedBox(height: 10),
+                            Wrap(
+                              spacing: 6,
+                              children: [
+                                Chip(
+                                    label: Text('Full-Time'),
+                                    backgroundColor: Colors.white),
+                                Chip(
+                                    label: Text('Hybrid'),
+                                    backgroundColor: Colors.grey[100]),
+                                Chip(
+                                    label: Text('Colombo'),
+                                    backgroundColor: Colors.white),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'At Vilampara Media, we are leading digital marketing through our innovative Power Reach AI ecosystem, designed to help businesses expand their reach and grow efficiently. As part of this initiative, we are seeking a creative and technically skilled Web Designer to join our team. This role is essential in building, managing, and optimizing WordPress websites that form the foundation of our clients’ digital success.',
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.grey[700]),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   );
                 },
               ),
