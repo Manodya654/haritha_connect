@@ -21,6 +21,9 @@ class Bottomnavbar extends StatelessWidget {
       case 3:
         Navigator.pushReplacementNamed(context, '/account');
         break;
+      case 4:
+        Navigator.pushReplacementNamed(context, '/User');
+        break;
     }
   }
 
@@ -37,6 +40,7 @@ class Bottomnavbar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.event), label: "Events"),
         BottomNavigationBarItem(icon: Icon(Icons.book), label: "Courses"),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
+        BottomNavigationBarItem(icon: Icon(Icons.search),label: "Users")
       ],
     );
   }

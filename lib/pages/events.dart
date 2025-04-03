@@ -3,7 +3,7 @@ import 'package:haritha_connect/components/BottomNavBar.dart';
 import 'package:haritha_connect/pages/event_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:haritha_connect/service/Database.dart';
+
 
 class Events extends StatefulWidget {
   const Events({super.key});
