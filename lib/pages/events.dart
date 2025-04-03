@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/BottomNavBar.dart';
 import 'package:haritha_connect/pages/event_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../service/Database.dart';
+import 'package:intl/intl.dart';
 
 class Events extends StatefulWidget {
   const Events({super.key});
@@ -72,33 +72,60 @@ class _EventsState extends State<Events> {
 
                         var events = snapshot.data!.docs;
 
-                        if (events.isEmpty) {
-                          return Center(child: Text("No events available"));
+                        // Get the current date
+                        DateTime now = DateTime.now();
+                        DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1)); // Monday
+                        DateTime endOfWeek = startOfWeek.add(Duration(days: 6)); // Sunday
+
+                        // Filter events happening in the current week
+                        var weeklyEvents = events.where((event) {
+                          DateTime eventDate;
+                          try {
+                            eventDate = DateFormat('yyyy-MM-dd').parse(event['date']); // Assuming date is in 'YYYY-MM-DD' format
+                          } catch (e) {
+                            return false; // Skip invalid date formats
+                          }
+                          return eventDate.isAfter(startOfWeek.subtract(Duration(days: 1))) &&
+                              eventDate.isBefore(endOfWeek.add(Duration(days: 1)));
+                        }).toList();
+
+                        if (weeklyEvents.isEmpty) {
+                          return Center(child: Text("No events this week"));
                         }
 
-                        return Row(
-                          children: List.generate(
-                            events.length >= 2 ? 2 : events.length,
-                                (index) {
-                              var event = events[index];
-                              return Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EventDetails()
+                        return SizedBox(
+                          height: 150,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List.generate(
+                                weeklyEvents.length,
+                                    (index) {
+                                  var event = weeklyEvents[index];
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => EventDetails(),
+                                          ),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width: 150,
+                                        child: EventCard(
+                                          title: event['EventName'],
+                                          organizer: event['OrganizerName'],
+                                          date: event['date'],
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: EventCard(
-                                    title: event['EventName'],
-                                    organizer: event['OrganizerName'],
-                                    date: event['date'],
-                                  ),
-                                ),
-                              );
-                            },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -106,7 +133,6 @@ class _EventsState extends State<Events> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
 
               // Featured Event Section

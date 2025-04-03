@@ -16,7 +16,7 @@ void main() async {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
     ),
-    initialRoute: '/home',
+    initialRoute: '/events',
     routes: {
       '/home': (context) => Jobs(),
       '/events': (context) => Events(),
@@ -25,6 +25,7 @@ void main() async {
       '/adevent': (context) => AddEventScreen(),
       '/addprofile':(context)=>AddProfileScreen(),
       '/profile':(context) => ProfilePage(),
+      '/adevent':(context) => AddEventScreen(),
     },
   ));
 }
