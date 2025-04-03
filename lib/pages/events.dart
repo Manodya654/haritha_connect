@@ -272,45 +272,74 @@ class EventCard extends StatelessWidget {
   }
 }
 
-class FeaturedEventCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                'https://img.freepik.com/free-psd/artificial-intelligence-template-design_23-2151631490.jpg',
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Event 2',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+@override
+Widget build(BuildContext context) {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: List.generate(
+        events.length,
+            (index) {
+          var event = events[index];
+          return Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EventDetails(),
                   ),
-                  Text('By John Doe', style: TextStyle(color: Colors.grey)),
-                ],
+                );
+              },
+              child: SizedBox(
+                width: 150,
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            'https://img.freepik.com/free-psd/artificial-intelligence-template-design_23-2151631490.jpg',
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                event['EventName'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                              Text(event['OrganizerName'],
+                                  style: TextStyle(color: Colors.grey)),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          event['date'],
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-            Text(
-              '25/02/24',
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-          ],
-        ),
+          );
+        },
       ),
-    );
-  }
+    ),
+  );
 }
