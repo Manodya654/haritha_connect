@@ -12,11 +12,8 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
   // Added missing function
-  Stream<QuerySnapshot> getEventsWorkshop() {
-    return FirebaseFirestore.instance
-        .collection('events')
-        .where('EventType', isEqualTo: 'Workshop')
-        .snapshots();
+  Stream<QuerySnapshot> getEvents() {
+    return FirebaseFirestore.instance.collection('Profile').snapshots();
   }
 
   @override
