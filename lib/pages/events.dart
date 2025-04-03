@@ -138,14 +138,49 @@ class _EventsState extends State<Events> {
               // Featured Event Section
               SectionTitle(title: "Featured Event"),
 
-              GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EventDetails()),
-                    );
-                  },
-                  child: FeaturedEventCard()),
+              StreamBuilder<QuerySnapshot>(
+                stream: getEvents(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  var events = snapshot.data!.docs;
+
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        events.length,
+                            (index) {
+                          var event = events[index];
+                          return Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EventDetails(),
+                                  ),
+                                );
+                              },
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: EventCard(
+                                  title: event['EventName'],
+                                  organizer: event['OrganizerName'],
+                                  date: event['date'],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               const SizedBox(height: 20),
 
