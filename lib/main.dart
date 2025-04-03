@@ -7,9 +7,6 @@ import 'package:haritha_connect/pages/profile_page.dart';
 import 'package:haritha_connect/pages/Additprofile.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -19,7 +16,7 @@ void main() async {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
     ),
-    initialRoute: '/events',
+    initialRoute: '/home',
     routes: {
       '/home': (context) => Jobs(),
       '/events': (context) => Events(),
@@ -28,7 +25,6 @@ void main() async {
       '/adevent': (context) => AddEventScreen(),
       '/addprofile':(context)=>AddProfileScreen(),
       '/profile':(context) => ProfilePage(),
-
     },
   ));
 }

@@ -105,3 +105,4 @@ android/app/build.gradle.kts
 /ios/Runner.xcodeproj
 /ios/Runner.xcodeproj
 /macos/Runner.xcodeproj
+firebase.json

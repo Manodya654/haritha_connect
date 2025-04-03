@@ -20,4 +20,9 @@ class DatabaseMethods{
             .collection("events")
             .snapshots();
       }
+
+      Stream<QuerySnapshot> getEvents() {
+        return FirebaseFirestore.instance.collection('events').snapshots();
+      }
+
 }

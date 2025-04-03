@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/BottomNavBar.dart';
 import 'package:haritha_connect/pages/event_details.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../service/Database.dart';
 
 class Events extends StatefulWidget {
   const Events({super.key});
@@ -10,6 +12,10 @@ class Events extends StatefulWidget {
 }
 
 class _EventsState extends State<Events> {
+  Stream<QuerySnapshot> getEvents() {
+    return FirebaseFirestore.instance.collection('events').snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,36 +63,45 @@ class _EventsState extends State<Events> {
               Row(
                 children: [
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EventDetails()),
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: getEvents(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                        var events = snapshot.data!.docs;
+
+                        if (events.isEmpty) {
+                          return Center(child: Text("No events available"));
+                        }
+
+                        return Row(
+                          children: List.generate(
+                            events.length >= 2 ? 2 : events.length,
+                                (index) {
+                              var event = events[index];
+                              return Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EventDetails()
+                                      ),
+                                    );
+                                  },
+                                  child: EventCard(
+                                    title: event['EventName'],
+                                    organizer: event['OrganizerName'],
+                                    date: event['date'],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         );
                       },
-                      child: EventCard(
-                        title: 'Event 1',
-                        organizer: 'Organizer Name',
-                        date: '25/02/24',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EventDetails()),
-                        );
-                      },
-                      child: EventCard(
-                        title: 'Event 2',
-                        organizer: 'Organizer Name',
-                        date: '25/02/24',
-                      ),
                     ),
                   ),
                 ],
