@@ -1,50 +1,245 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:testing_senuris_one/pages/userProfilePage.dart';
 
-class Search extends StatefulWidget {
-  const Search({super.key});
+// Curved Background Widget
+class CurvedBackground extends StatelessWidget {
+  final double height;
+  final Widget? child;
+
+  const CurvedBackground({
+    Key? key,
+    this.height = 200, // Default height
+    this.child,
+  }) : super(key: key);
 
   @override
-  _SearchState createState() => _SearchState();
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: CustomCurveClipper(),
+          child: Container(
+            height: height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blue.shade700, Colors.green.shade400],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+        ),
+        if (child != null) Positioned.fill(child: child!),
+      ],
+    );
+  }
 }
 
-class _SearchState extends State<Search> {
-  final TextEditingController _searchController = TextEditingController();
-  List<String> _searchResults = [];
-  final List<String> _images = [
-  // 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
-  // 'https://images.pexels.com/photos/1464720/pexels-photo-1464720.jpeg',
-  // 'https://images.pexels.com/photos/34950/pexels-photo.jpg',
-  // Add more image URLs
-];
-
-  void _search(String query) {
-    setState(() {
-      _searchResults = _images
-          .where((image) => image.contains(query.toLowerCase()))
-          .toList();
-    });
+class CustomCurveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 50);
+    path.quadraticBezierTo(
+      size.width / 2,
+      size.height + 20,
+      size.width,
+      size.height - 50,
+    );
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
   }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+// Header Text Style
+const TextStyle Kheaderstyle = TextStyle(
+  color: Colors.white,
+  fontSize: 30,
+  fontWeight: FontWeight.bold,
+);
+
+// User Search Screen
+class UserSearchScreen extends StatefulWidget {
+  @override
+  _UserSearchScreenState createState() => _UserSearchScreenState();
+}
+
+class _UserSearchScreenState extends State<UserSearchScreen> {
+  String searchQuery = "";
+  final TextEditingController _searchController = TextEditingController();
+  Set<String> seenNames = {}; // Prevents duplicate names
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //drawer: const NavigationDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 4,
-            mainAxisSpacing: 4,
+      body: Column(
+        children: [
+          // Curved Background with Search Bar & Title inside it
+          Stack(
+            children: [
+              CurvedBackground(height: 250),
+              Positioned(
+                top: 60, // Adjust vertical position
+                left: 20,
+                right: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title: "Search Users"
+                    Text("Search Users", style: Kheaderstyle),
+                    SizedBox(height: 15),
+
+                    // Search Bar
+                    TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: "Search by name...",
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.blueAccent,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, color: Colors.blueAccent),
+                          onPressed: () {
+                            setState(() {
+                              searchQuery = "";
+                              _searchController.clear();
+                            });
+                          },
+                        ),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.9),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          itemCount: _searchResults.isEmpty ? _images.length : _searchResults.length,
-          itemBuilder: (context, index) {
-            return Image.network(
-              _searchResults.isEmpty ? _images[index] : _searchResults[index],
-              fit: BoxFit.cover,
-            );
-          },
-        ),
+
+          // Search Results Section
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: StreamBuilder<QuerySnapshot>(
+                stream:
+                    searchQuery.isEmpty
+                        ? FirebaseFirestore.instance
+                            .collection("Users")
+                            .snapshots()
+                        : FirebaseFirestore.instance
+                            .collection("Users")
+                            .where("name", isGreaterThanOrEqualTo: searchQuery)
+                            .where("name", isLessThan: searchQuery + 'z')
+                            .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  var users = snapshot.data!.docs;
+                  seenNames.clear(); // Reset seen names
+
+                  if (users.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "No users found",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    itemCount: users.length,
+                    itemBuilder: (context, index) {
+                      var user = users[index].data() as Map<String, dynamic>;
+
+                      String userName = user["name"] ?? "Unknown Name";
+                      String userEmail = user["title"] ?? "No Title Provided";
+
+                      if (seenNames.contains(userName)) {
+                        return SizedBox.shrink(); // Hide duplicates
+                      }
+                      seenNames.add(userName);
+
+                      return Card(
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        elevation: 5,
+                        shadowColor: Colors.grey[400],
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.blueAccent,
+                            child: Text(
+                              userName.isNotEmpty
+                                  ? userName[0].toUpperCase()
+                                  : '',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          title: Text(
+                            userName,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          subtitle: Text(
+                            userEmail,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 18,
+                            color: Colors.blueAccent,
+                          ),
+                          onTap: () {
+                            // Navigate to Profile Page and pass user data
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => UserProfilePage(user: user),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
