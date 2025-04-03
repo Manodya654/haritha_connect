@@ -4,27 +4,55 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testing_senuris_one/firebase_options.dart';
 
-class AddJobScreen extends StatefulWidget {
-  final String? jobId;
-  final Map<String, dynamic>? jobData;
+class Editjob extends StatefulWidget {
+  final String jobId;
 
-  AddJobScreen({this.jobId, this.jobData});
+  const Editjob({required this.jobId});
 
   @override
-  _AddJobScreenState createState() => _AddJobScreenState();
+  State<Editjob> createState() => _EditjobState();
 }
 
-class _AddJobScreenState extends State<AddJobScreen> {
+class _EditjobState extends State<Editjob> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _companyNameController = TextEditingController();
   final TextEditingController _companyLogoController = TextEditingController();
   final TextEditingController _jobPositionController = TextEditingController();
-  final TextEditingController _jobDescriptionController = TextEditingController();
+  final TextEditingController _jobDescriptionController =
+      TextEditingController();
   final TextEditingController _salaryController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _applyLinkController = TextEditingController();
 
   String _jobType = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadJobData();
+    print("job id: ${widget.jobId}");
+  }
+
+  Future<void> _loadJobData() async {
+    DocumentSnapshot jobDoc =
+        await FirebaseFirestore.instance
+            .collection("jobs")
+            .doc(widget.jobId)
+            .get();
+    if (jobDoc.exists) {
+      Map<String, dynamic> data = jobDoc.data() as Map<String, dynamic>;
+      setState(() {
+        _companyNameController.text = data['companyName'] ?? '';
+        _companyLogoController.text = data['companyLogo'] ?? '';
+        _jobPositionController.text = data['jobPosition'] ?? '';
+        _jobDescriptionController.text = data['jobDescription'] ?? '';
+        _salaryController.text = data['salary'] ?? '';
+        _locationController.text = data['location'] ?? "";
+        _jobType = data['jobType'];
+        _applyLinkController.text = data['applyLink'];
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -53,17 +81,20 @@ class _AddJobScreenState extends State<AddJobScreen> {
       };
 
       try {
-        if (widget.jobId != null) {
-          await FirebaseFirestore.instance.collection('jobs').doc(widget.jobId).update(jobData);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Job Updated Successfully!")));
-        } else {
-          await FirebaseFirestore.instance.collection('jobs').add(jobData);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Job Added Successfully!")));
-        }
+        // If editing, update job
+        await FirebaseFirestore.instance
+            .collection('jobs')
+            .doc(widget.jobId)
+            .update(jobData);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Job Updated Successfully!")));
 
-        Navigator.pop(context);
+        Navigator.pop(context); // Close the screen after saving
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error: $e")));
       }
     }
   }
@@ -73,7 +104,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Curved Background with Back Button and Title
           Positioned.fill(
             child: CurvedBackground(
               height: 150,
@@ -82,17 +112,16 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 children: [
                   const SizedBox(height: 40),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Row(
                       children: [
-                        // Back Button
                         IconButton(
                           icon: Icon(Icons.arrow_back, color: Colors.white),
                           onPressed: () {
                             Navigator.pop(context);
                           },
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width: 10), // Add spacing between arrow and title
                         Text("Job Details", style: Kheaderstyle),
                       ],
                     ),
@@ -101,8 +130,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
               ),
             ),
           ),
-
-          // Job Form Content
           Positioned(
             top: 130,
             left: 20,
@@ -124,7 +151,10 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       const SizedBox(height: 20),
                       _buildTextField(_jobPositionController, "Job Position"),
                       const SizedBox(height: 30),
-                      _buildTextField(_jobDescriptionController, "Job Description"),
+                      _buildTextField(
+                        _jobDescriptionController,
+                        "Job Description",
+                      ),
                       const SizedBox(height: 30),
                       _buildTextField(_salaryController, "Salary"),
                       const SizedBox(height: 30),
@@ -137,7 +167,10 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         padding: const EdgeInsets.only(left: 6.0),
                         child: Text(
                           "Job Type",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -150,7 +183,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _submitForm,
-                          child: Text("Create"),
+                          child: Text("Edit Job"),
                         ),
                       ),
 
@@ -182,34 +215,36 @@ class _AddJobScreenState extends State<AddJobScreen> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: jobTypes.map((type) {
-          return Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  _jobType = type;
-                });
-              },
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+        children:
+            jobTypes.map((type) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: OutlinedButton(
+                  onPressed: () {
+                    setState(() {
+                      _jobType = type;
+                    });
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    side: BorderSide(
+                      color: _jobType == type ? Colors.blue : Colors.black,
+                    ),
+                    backgroundColor:
+                        _jobType == type ? Colors.blue.withOpacity(0.2) : null,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  ),
+                  child: Text(
+                    type,
+                    style: TextStyle(
+                      color: _jobType == type ? Colors.blue : Colors.black,
+                    ),
+                  ),
                 ),
-                side: BorderSide(
-                  color: _jobType == type ? Colors.blue : Colors.black,
-                ),
-                backgroundColor: _jobType == type ? Colors.blue.withOpacity(0.2) : null,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              ),
-              child: Text(
-                type,
-                style: TextStyle(
-                  color: _jobType == type ? Colors.blue : Colors.black,
-                ),
-              ),
-            ),
-          );
-        }).toList(),
+              );
+            }).toList(),
       ),
     );
   }
