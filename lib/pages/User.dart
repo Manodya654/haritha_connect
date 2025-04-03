@@ -12,7 +12,7 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
   // Added missing function
-  Stream<QuerySnapshot> getEvents() {
+  Stream<QuerySnapshot> getUsers() {
     return FirebaseFirestore.instance.collection('Profile').snapshots();
   }
 
@@ -40,14 +40,32 @@ class _UserState extends State<User> {
           SizedBox(width: 15),
         ],
       ),
-      body: Center(
-        child: FeaturedEventCard(
-          title: "User Name",
-          organizer: "Title",
-          about: "about",
-          profileImage: 'assets/images/profile.jpeg',
-        ),
-      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: getUsers(),
+    builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+    return Center(child: CircularProgressIndicator());
+    }
+    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+    return Center(child: Text("No users found"));
+    }
+
+    var users = snapshot.data!.docs;
+
+    return ListView.builder(
+    itemCount: users.length,
+    itemBuilder: (context, index) {
+    var user = users[index];
+    return FeaturedEventCard(
+    title: user['Name'], // Ensure field names match Firestore
+    organizer: user['title'],
+    about: user['about'],
+    profileImage: user['profileImage'], // Should be a valid URL or asset path
+    );
+    },
+    );
+    },
+    ),
     );
   }
 }
@@ -75,7 +93,7 @@ class FeaturedEventCard extends StatelessWidget {
         children: [
           SizedBox(height: 8),
           Container(
-            width: 300,
+            width: 350,
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.blue, // Background color
