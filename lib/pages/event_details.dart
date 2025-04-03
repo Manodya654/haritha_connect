@@ -1,52 +1,81 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/BottomNavBar.dart';
 import 'package:haritha_connect/components/bookmarkButton.dart';
 import 'package:haritha_connect/pages/profile_page.dart';
 
 class EventDetails extends StatefulWidget {
-  const EventDetails({super.key});
+  final String eventId;
+
+  const EventDetails({Key? key, required this.eventId}) : super(key: key);
 
   @override
   State<EventDetails> createState() => _EventDetailsState();
 }
 
 class _EventDetailsState extends State<EventDetails> {
+  Map<String, dynamic>? eventData;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEventDetails();
+  }
+
+  Future<void> fetchEventDetails() async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection("events")
+          .doc(widget.eventId)
+          .get();
+
+      if (snapshot.exists) {
+        setState(() {
+          eventData = snapshot.data() as Map<String, dynamic>;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Error fetching event: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: const Text('Event Details'),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: BookmarkButton(),
-          ),
-        ],
+        title: const Text('Event Details'),
+        // actions: const [BookmarkButton()],
       ),
-      body: Padding(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : eventData == null
+          ? const Center(child: Text("Event not found"))
+          : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Organizer Name & Logo
+            // Organizer & Logo
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Highspeed Studios',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Text(
+                  eventData!['OrganizerName'] ?? "Unknown Organizer",
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Container(
                   height: 70,
@@ -55,9 +84,10 @@ class _EventDetailsState extends State<EventDetails> {
                     color: Colors.blue.shade100,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  // child: const Icon(Icons.loop, color: Colors.blue),
                   child: Image.network(
-                    "https://img.freepik.com/free-vector/illustration-photo-studio-stamp-banner_53876-6870.jpg?ga=GA1.1.1378088882.1742949859&semt=ais_hybrid",
+                    eventData!['EventPicture'] ??
+                        "https://via.placeholder.com/70",
+                    fit: BoxFit.cover,
                   ),
                 ),
               ],
@@ -65,21 +95,19 @@ class _EventDetailsState extends State<EventDetails> {
             const SizedBox(height: 8),
 
             // Event Name
-            const Text(
-              'event 1',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              eventData!['EventName'] ?? "Event Name",
+              style: const TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
             // Date & Time
             Row(
               children: [
-                InfoIcon(
-                    // icon: Icon(Symbols.calendar_view_month),
-                    icon: Icon(Icons.calendar_month),
-                    color: Colors.purple),
+                const Icon(Icons.calendar_month, color: Colors.purple),
                 const SizedBox(width: 8),
-                const Text('25/2/25  •  10:00 AM'),
+                Text(eventData!['date'] + " • " + eventData!['time']),
               ],
             ),
             const SizedBox(height: 12),
@@ -87,12 +115,9 @@ class _EventDetailsState extends State<EventDetails> {
             // Location
             Row(
               children: [
-                InfoIcon(
-                    // icon: Icon(Symbols.calendar_view_month),
-                    icon: Icon(Icons.location_pin),
-                    color: Colors.purple),
+                const Icon(Icons.location_pin, color: Colors.purple),
                 const SizedBox(width: 8),
-                const Text('FOC 009'),
+                Text(eventData!['EventLocation'] ?? "No Location"),
               ],
             ),
             const SizedBox(height: 16),
@@ -100,27 +125,12 @@ class _EventDetailsState extends State<EventDetails> {
             // Description
             const Text(
               'Description',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...',
-              style: TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 12),
-
-            // Bullet Points
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                _BulletPoint(text: 'Sed ut perspiciatis unde omnis'),
-                _BulletPoint(text: 'Doloremque laudantium'),
-                _BulletPoint(text: 'Ipsa quae ab illo inventore'),
-                _BulletPoint(text: 'Architecto beatae vitae dicta'),
-                _BulletPoint(text: 'Sunt explicabo'),
-              ],
-            ),
-
+            Text(eventData!['EventDescription'] ??
+                "No Description Available"),
             const Spacer(),
 
             // Join Button
@@ -139,12 +149,14 @@ class _EventDetailsState extends State<EventDetails> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      padding:
+                      const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: const Text('JOIN', style: TextStyle(fontSize: 16)),
+                    child: const Text('JOIN',
+                        style: TextStyle(fontSize: 16)),
                   ),
                 ),
               ],
@@ -152,46 +164,7 @@ class _EventDetailsState extends State<EventDetails> {
           ],
         ),
       ),
-      bottomNavigationBar: Bottomnavbar(
-        pageIndex: 1,
-      ),
-    );
-  }
-}
-
-class InfoIcon extends StatelessWidget {
-  final Icon icon;
-  final Color color;
-
-  const InfoIcon({required this.icon, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      // child: Icon(icon, color: color),
-      child: icon,
-    );
-  }
-}
-
-// Bullet Point Widget
-class _BulletPoint extends StatelessWidget {
-  final String text;
-  const _BulletPoint({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Icon(Icons.check_circle, color: Colors.purple, size: 18),
-        const SizedBox(width: 8),
-        Text(text, style: const TextStyle(fontSize: 14)),
-      ],
+      bottomNavigationBar: Bottomnavbar(pageIndex: 1),
     );
   }
 }

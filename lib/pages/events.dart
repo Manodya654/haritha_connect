@@ -125,7 +125,7 @@ class _EventsState extends State<Events> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => EventDetails(),
+                                            builder: (context) => EventDetails(eventId: event.id),
                                           ),
                                         );
                                       },
@@ -177,7 +177,7 @@ class _EventsState extends State<Events> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EventDetails(),
+                                    builder: (context) => EventDetails(eventId: event.id),
                                   ),
                                 );
                               },
@@ -226,7 +226,7 @@ class _EventsState extends State<Events> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EventDetails(),
+                                    builder: (context) => EventDetails(eventId: event.id),
                                   ),
                                 );
                               },
@@ -274,7 +274,7 @@ class _EventsState extends State<Events> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EventDetails(),
+                                    builder: (context) => EventDetails(eventId: event.id),
                                   ),
                                 );
                               },

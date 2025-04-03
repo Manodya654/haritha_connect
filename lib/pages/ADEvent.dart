@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/components/Components.dart';
 import 'package:random_string/random_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:haritha_connect/pages/events.dart';
 import '../service/Database.dart';
-
 
 class AddEventScreen extends StatefulWidget {
   @override
@@ -13,13 +14,16 @@ class AddEventScreen extends StatefulWidget {
 class _AddEventScreenState extends State<AddEventScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController  _EventController = TextEditingController();
-  TextEditingController  _OrganizerController = TextEditingController();
-  TextEditingController  _DescriptionController = TextEditingController();
-  TextEditingController  _LocationController = TextEditingController();
+  TextEditingController _EventController = TextEditingController();
+  TextEditingController _OrganizerController = TextEditingController();
+  TextEditingController _DescriptionController = TextEditingController();
+  TextEditingController _LocationController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-  String  _eventType = "Workshop";
+  TextEditingController _pictureController = TextEditingController();
+  TextEditingController _applyFormController = TextEditingController();
+
+  String _eventType = "Workshop";
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -49,8 +53,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,14 +64,18 @@ class _AddEventScreenState extends State<AddEventScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),   Row(
+                  const SizedBox(height: 40),
+                  Row(
                     children: [
                       // Padding(
                       // padding: EdgeInsets.only(left: 20.0),
                       // child: IconButton(
                       IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Events()),
+                          );
                         },
                         icon: Icon(Icons.arrow_back),
                         color: Colors.white,
@@ -88,7 +94,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ),
             ),
           ),
-
           Positioned(
             top: 130,
             left: 20,
@@ -110,7 +115,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Event Name",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter event name" : null,
+                        validator: (value) =>
+                        value!.isEmpty ? "Please enter event name" : null,
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
@@ -119,7 +125,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Organizer Name",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter organizer name" : null,
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter organizer name"
+                            : null,
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
@@ -128,7 +136,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Event Description",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter event description" : null,
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter event description"
+                            : null,
                       ),
                       const SizedBox(height: 30),
                       TextFormField(
@@ -137,7 +147,36 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           labelText: "Event Location",
                           border: OutlineInputBorder(),
                         ),
-                        validator: (value) => value!.isEmpty ? "Please enter event location" : null,
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter event location"
+                            : null,
+                      ),
+                      const SizedBox(height: 30),
+
+                      TextFormField(
+                        controller: _pictureController,
+                        readOnly: false,
+                        enabled: true,
+                        enableInteractiveSelection: true,
+                        decoration: const InputDecoration(
+                          labelText: "Event Picture Url",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter event Picture as url"
+                            : null,
+                      ),
+                      const SizedBox(height: 30),
+
+                      TextFormField(
+                        controller: _applyFormController,
+                        decoration: const InputDecoration(
+                          labelText: "Event Apply Form Url",
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) => value!.isEmpty
+                            ? "Please enter apply form url"
+                            : null,
                       ),
                       const SizedBox(height: 30),
 
@@ -153,7 +192,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 suffixIcon: Icon(Icons.calendar_today),
                               ),
                               onTap: () => _selectDate(context),
-                              validator: (value) => value!.isEmpty ? "Please select event date" : null,
+                              validator: (value) => value!.isEmpty
+                                  ? "Please select event date"
+                                  : null,
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -167,7 +208,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 suffixIcon: Icon(Icons.access_time),
                               ),
                               onTap: () => _selectTime(context),
-                              validator: (value) => value!.isEmpty ? "Please select event time" : null,
+                              validator: (value) => value!.isEmpty
+                                  ? "Please select event time"
+                                  : null,
                             ),
                           ),
                         ],
@@ -185,13 +228,22 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               });
                             },
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: _eventType == "Workshop" ? Colors.blue : Colors.transparent,
-                              side: BorderSide(color: _eventType == "Workshop" ? Colors.blue : Colors.black),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              backgroundColor: _eventType == "Workshop"
+                                  ? Colors.blue
+                                  : Colors.transparent,
+                              side: BorderSide(
+                                  color: _eventType == "Workshop"
+                                      ? Colors.blue
+                                      : Colors.black),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                             ),
                             child: Text(
                               "Workshop",
-                              style: TextStyle(color: _eventType == "Workshop" ? Colors.white : Colors.black),
+                              style: TextStyle(
+                                  color: _eventType == "Workshop"
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                           ),
                           SizedBox(width: 20),
@@ -202,13 +254,22 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               });
                             },
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: _eventType == "Event" ? Colors.blue : Colors.transparent,
-                              side: BorderSide(color: _eventType == "Event" ? Colors.blue : Colors.black),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              backgroundColor: _eventType == "Event"
+                                  ? Colors.blue
+                                  : Colors.transparent,
+                              side: BorderSide(
+                                  color: _eventType == "Event"
+                                      ? Colors.blue
+                                      : Colors.black),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                             ),
                             child: Text(
                               "Event",
-                              style: TextStyle(color: _eventType == "Event" ? Colors.white : Colors.black),
+                              style: TextStyle(
+                                  color: _eventType == "Event"
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                           ),
                         ],
@@ -218,39 +279,44 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () async{
+                          onPressed: () async {
                             String id = randomAlphaNumeric(10);
-                              Map<String,dynamic> addEventMap = {
-
-                                "id": id,
-                                "EventName": _EventController.text,
-                                "OrganizerName": _OrganizerController.text,
-                                "EventDescription": _DescriptionController.text,
-                                "EventLocation": _LocationController.text,
-                                "EventType": _eventType,
-                                "date": _dateController.text,
-                                "time": _timeController.text,
-                              };
+                            Map<String, dynamic> addEventMap = {
+                              "id": id,
+                              "EventName": _EventController.text,
+                              "OrganizerName": _OrganizerController.text,
+                              "EventDescription": _DescriptionController.text,
+                              "EventLocation": _LocationController.text,
+                              "EventPicture": _pictureController.text,
+                              "EventJoinLink": _applyFormController.text,
+                              "EventType": _eventType,
+                              "date": _dateController.text,
+                              "time": _timeController.text,
+                              "dateAdded": FieldValue.serverTimestamp(),
+                            };
 
                             _dateController.clear();
                             _timeController.clear();
                             _EventController.clear();
                             _OrganizerController.clear();
                             _DescriptionController.clear();
+                            _pictureController.clear();
+                            _applyFormController.clear();
                             _LocationController.clear();
 
-                            await  DatabaseMethods().addEvent(addEventMap,id).then((value) {
+                            await DatabaseMethods()
+                                .addEvent(addEventMap, id)
+                                .then((value) {
                               Fluttertoast.showToast(
-                                msg: "Event added successfully",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0
-                            );});
-
-                            },
+                                  msg: "Event added successfully",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            });
+                          },
                           child: Text("Submit Event"),
                         ),
                       ),

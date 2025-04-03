@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haritha_connect/pages/ADEvent.dart';
 import 'package:haritha_connect/pages/courses.dart';
+import 'package:haritha_connect/pages/event_details.dart';
 import 'package:haritha_connect/pages/events.dart';
 import 'package:haritha_connect/pages/jobs.dart';
 import 'package:haritha_connect/pages/profile_page.dart';
@@ -16,7 +17,7 @@ void main() async {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
     ),
-    initialRoute: '/events',
+    initialRoute: '/eventdetails',
     routes: {
       '/home': (context) => Jobs(),
       '/events': (context) => Events(),
@@ -26,6 +27,7 @@ void main() async {
       '/addprofile':(context)=>AddProfileScreen(),
       '/profile':(context) => ProfilePage(),
       '/adevent':(context) => AddEventScreen(),
+      '/eventdetails':(context) => EventDetails(eventId: 'defaultEventId'),
     },
   ));
 }
