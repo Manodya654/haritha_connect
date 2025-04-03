@@ -3,6 +3,7 @@ import 'package:haritha_connect/components/BottomNavBar.dart';
 import 'package:haritha_connect/pages/event_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:haritha_connect/service/Database.dart';
 
 class Events extends StatefulWidget {
   const Events({super.key});
@@ -15,6 +16,21 @@ class _EventsState extends State<Events> {
   Stream<QuerySnapshot> getEvents() {
     return FirebaseFirestore.instance.collection('events').snapshots();
   }
+
+   Stream<QuerySnapshot> getEventsWorkshop() {
+    return FirebaseFirestore.instance
+        .collection('events')
+        .where('EventType', isEqualTo: 'Workshop')
+        .snapshots();
+  }
+  Stream<QuerySnapshot> getEventsEvent() {
+    return FirebaseFirestore.instance
+        .collection('events')
+        .where('EventType', isEqualTo: 'Event')
+        .snapshots();
+  }
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +130,7 @@ class _EventsState extends State<Events> {
                                         );
                                       },
                                       child: SizedBox(
-                                        width: 150,
+                                        width: 160,
                                         child: EventCard(
                                           title: event['EventName'],
                                           organizer: event['OrganizerName'],
@@ -166,7 +182,7 @@ class _EventsState extends State<Events> {
                                 );
                               },
                               child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.8,
+                                width: 355,
                                 child: EventCard(
                                   title: event['EventName'],
                                   organizer: event['OrganizerName'],
@@ -186,18 +202,97 @@ class _EventsState extends State<Events> {
 
               // Workshops Section
               SectionTitle(title: "Workshops"),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EventDetails()),
+
+              StreamBuilder<QuerySnapshot>(
+                stream: getEventsWorkshop(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  var events = snapshot.data!.docs;
+
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        events.length,
+                            (index) {
+                          var event = events[index];
+                          return Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EventDetails(),
+                                  ),
+                                );
+                              },
+                              child: SizedBox(
+                                width: 355,
+                                child: EventCard(
+                                  title: event['EventName'],
+                                  organizer: event['OrganizerName'],
+                                  date: event['date'],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   );
                 },
-                child: EventCard(
-                  title: 'Workshop 1',
-                  organizer: 'Organizer Name',
-                  date: '25/02/24',
-                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              SectionTitle(title: "Event"),
+
+              StreamBuilder<QuerySnapshot>(
+                stream: getEventsEvent(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  var events = snapshot.data!.docs;
+
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        events.length,
+                            (index) {
+                          var event = events[index];
+                          return Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EventDetails(),
+                                  ),
+                                );
+                              },
+                              child: SizedBox(
+                                width: 355,
+                                child: EventCard(
+                                  title: event['EventName'],
+                                  organizer: event['OrganizerName'],
+                                  date: event['date'],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
