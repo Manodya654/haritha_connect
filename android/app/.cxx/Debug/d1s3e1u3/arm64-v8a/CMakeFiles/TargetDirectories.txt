@@ -1,2 +1,0 @@
-/Users/venurakaranasinghe/Library/CloudStorage/OneDrive-NSBM/2 nd year/2nd semester/Mobile App development/haritha_connect/android/app/.cxx/Debug/d1s3e1u3/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/venurakaranasinghe/Library/CloudStorage/OneDrive-NSBM/2 nd year/2nd semester/Mobile App development/haritha_connect/android/app/.cxx/Debug/d1s3e1u3/arm64-v8a/CMakeFiles/rebuild_cache.dir
