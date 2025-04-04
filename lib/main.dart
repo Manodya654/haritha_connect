@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_connect/pages/courses.dart';
+import 'package:ui_connect/pages/editJob.dart';
+import 'package:ui_connect/pages/edit_course.dart';
 import 'package:ui_connect/pages/events.dart';
 import 'package:ui_connect/pages/jobs.dart';
 import 'package:ui_connect/pages/login.dart';
@@ -21,7 +23,7 @@ void main() async {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
     ),
-    initialRoute: '/login',
+    initialRoute: '/EditCourse',
     routes: {
       '/login': (context) => Login(),
       '/job': (context) => Jobs(),
@@ -29,6 +31,8 @@ void main() async {
       '/searchPeople': (context) => UserSearchScreen(),
       '/courses': (context) => Courses(),
       '/account': (context) => ProfilePage(),
+      '/Editjob':(context) => Editjob(jobId: '2'),
+      '/EditCourse':(context) => EditCourse(CourseId: '2'),
     },
   ));
 }

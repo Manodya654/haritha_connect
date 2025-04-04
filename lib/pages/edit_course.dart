@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:ui_connect/pages/courses.dart';
+import 'package:ui_connect/pages/jobs.dart';
+import '../components/Components.dart';
 
 class EditCourse extends StatefulWidget {
   final String CourseId;
@@ -129,61 +131,110 @@ class _EditCourseState extends State<EditCourse> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Edit Course")),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
+      body: Column(
+        children: [
+          CurvedBackground(
+            height: 150,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormField(
-                    controller: _courseNameController,
-                    decoration: InputDecoration(labelText: "Course Name")),
-                TextFormField(
-                    controller: _courseInstructorController,
-                    decoration: InputDecoration(labelText: "Instructor")),
-                TextFormField(
-                    controller: _courseDurationController,
-                    decoration: InputDecoration(labelText: "Duration")),
-                TextFormField(
-                    controller: _courseDescriptionController,
-                    decoration: InputDecoration(labelText: "Description")),
-                TextFormField(
-                    controller: _courseJoinLinkController,
-                    decoration: InputDecoration(labelText: "Join Link")),
-                Wrap(
-                    spacing: 10,
-                    children: [
-                      "AI",
-                      "Machine Learning",
-                      "Data Science",
-                      "Computer Science"
-                    ].map((subject) {
-                      return ElevatedButton(
-                        onPressed: () =>
-                            setState(() => selectedButton = subject),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: selectedButton == subject
-                              ? Colors.blue
-                              : Colors.grey,
-                        ),
-                        child: Text(subject),
-                      );
-                    }).toList()),
-                ElevatedButton(
-                    onPressed: _pickImage, child: Text("Select Image")),
-                _selectedImage != null
-                    ? Image.file(_selectedImage!, height: 150)
-                    : Text("No Image Selected"),
-                ElevatedButton(
-                    onPressed: _updateCourse, child: Text("Edit Course")),
+                const SizedBox(height: 40),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Jobs()),
+                        );
+                      },
+                      icon: Icon(Icons.arrow_back),
+                      color: Colors.white,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Text(
+                        "Edit Course",
+                        style: Kheaderstyle,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _courseNameController,
+                        decoration: InputDecoration(labelText: "Course Name"),
+                      ),
+                      TextFormField(
+                        controller: _courseInstructorController,
+                        decoration: InputDecoration(labelText: "Instructor"),
+                      ),
+                      TextFormField(
+                        controller: _courseDurationController,
+                        decoration: InputDecoration(labelText: "Duration"),
+                      ),
+                      TextFormField(
+                        controller: _courseDescriptionController,
+                        decoration: InputDecoration(labelText: "Description"),
+                      ),
+                      TextFormField(
+                        controller: _courseJoinLinkController,
+                        decoration: InputDecoration(labelText: "Join Link"),
+                      ),
+                      SizedBox(height: 20),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                          spacing: 10,
+                          children: [
+                            "AI",
+                            "Machine Learning",
+                            "Data Science",
+                            "Computer Science"
+                          ].map((subject) {
+                            return ElevatedButton(
+                              onPressed: () => setState(() => selectedButton = subject),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: selectedButton == subject ? Colors.blue : Colors.white,
+                              ),
+                              child: Text(subject),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _pickImage,
+                        child: Text("Select Image"),
+                      ),
+                      _selectedImage != null
+                          ? Image.file(_selectedImage!, height: 150)
+                          : Text("No Image Selected"),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _updateCourse,
+                        child: Text("Edit Course"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

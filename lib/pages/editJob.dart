@@ -16,8 +16,7 @@ class _EditjobState extends State<Editjob> {
   final TextEditingController _companyNameController = TextEditingController();
   final TextEditingController _companyLogoController = TextEditingController();
   final TextEditingController _jobPositionController = TextEditingController();
-  final TextEditingController _jobDescriptionController =
-      TextEditingController();
+  final TextEditingController _jobDescriptionController = TextEditingController();
   final TextEditingController _salaryController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _applyLinkController = TextEditingController();
@@ -120,7 +119,7 @@ class _EditjobState extends State<Editjob> {
                         ),
                         SizedBox(
                             width: 10), // Add spacing between arrow and title
-                        Text("Job Details", style: Kheaderstyle),
+                        Text("Edit Job", style: Kheaderstyle),
                       ],
                     ),
                   ),
